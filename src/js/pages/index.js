@@ -1,6 +1,6 @@
 const h = require('virtual-dom/h')
 
-const styles = require('../styles.js')
+const styles = require('./styles.js')
 
 const contactInfo = h('div', [
   h('p', 'Abierto Ahora.'),
@@ -26,7 +26,7 @@ const footer = h('footer', [
   h('a', {href: 'facebook.com/alexisdelatorre'}, 'Alexis De La Torre')
 ])
 
-const indexPage = require('../index-page.js')
+const indexPage = require('./home.js')
 
 module.exports = h('div#wrapper', [
   contactInfo,

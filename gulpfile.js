@@ -12,8 +12,8 @@ let express = require('express');
 let app = express();
 
 gulp.task('build', function () {
-    // app.js is your main JS file with all your module inclusions
-    return browserify({entries: './src/js/app.js', debug: true})
+    // client.js is your main JS file with all your module inclusions
+    return browserify({entries: './src/js/client.js', debug: true})
         .transform("babelify", { presets: ["es2015"] })
         .bundle()
         .pipe(source('app.js'))

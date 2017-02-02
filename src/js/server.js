@@ -47,19 +47,19 @@ _.each(router, (value) => {
 
 // static assets
 app.get('/img/:fileName', (req, res) => {
-  res.sendFile('./inject/img/' + req.params.fileName, {root: path.join(__dirname, '/..')})
+  res.sendFile('./assets/img/' + req.params.fileName, {root: path.join(__dirname, '/..')})
 })
 
 app.get('/cooper-hewitt.css', (req, res) => {
-  res.sendFile('./inject/cooper-hewitt.css', {root: path.join(__dirname, '/..')})
+  res.sendFile('./assets/cooper-hewitt.css', {root: path.join(__dirname, '/..')})
 })
 
 app.get('/reset.css', (req, res) => {
-  res.sendFile('./inject/reset.css', {root: path.join(__dirname, '/..')})
+  res.sendFile('./assets/reset.css', {root: path.join(__dirname, '/..')})
 })
 
 app.get('/js/app.js', (req, res) => {
-  res.sendFile('./inject/js/app.js', {root: path.join(__dirname, '/..')})
+  res.sendFile('./assets/js/app.js', {root: path.join(__dirname, '/..')})
 })
 
 app.listen(3000, () => {

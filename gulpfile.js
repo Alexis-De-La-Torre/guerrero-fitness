@@ -21,7 +21,7 @@ gulp.task('build', function () {
       .pipe(sourcemaps.init())
       .pipe(uglify())
       .pipe(sourcemaps.write('./maps'))
-      .pipe(gulp.dest('./src/inject/js'))
+      .pipe(gulp.dest('./src/assets/js'))
       .pipe(livereload())
 })
 
@@ -35,12 +35,7 @@ gulp.task('server', () => {
   })
 })
 
-gulp.task('inject', () => {
-  gulp.src('./src/inject/**/*')
-    .pipe(gulp.dest('./dist'))
-})
-
-gulp.task('default', ['server', 'inject', 'watch'])
+gulp.task('default', ['server', 'watch'])
 
 gulp.task('watch', ['build'], function () {
   livereload.listen()

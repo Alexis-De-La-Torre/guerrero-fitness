@@ -6,23 +6,46 @@ const app = express()
 const h = require('virtual-dom/h')
 const hToString = require('vdom-to-html')
 
-const indexPage = require('./pages/index.js')
+const _ = require('lodash')
 
-app.get('/', (req, res) => {
+const indexPage = require('./pages/index.js')
+const router = [
+  {
+    route: '/',
+    rendered: indexPage(require('./pages/home.js'))
+  },
+  {
+    route: '/info',
+    rendered: indexPage(require('./pages/info.js'))
+  },
+  {
+    route: '/contact',
+    rendered: indexPage(require('./pages/contact.js'))
+  }
+]
+
+// setup router on server
+_.each(router, (value) => {
   const head = h('head', [
     h('link', {rel: 'stylesheet', href: 'reset.css'}),
     h('link', {rel: 'stylesheet', href: 'cooper-hewitt.css'}),
     h('link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto+Mono'})
   ])
 
+  const scripts = h('script', {src: 'js/app.js'})
+
   const html = h('html', [
     head,
-    indexPage
+    value.rendered,
+    scripts
   ])
 
-  res.send(hToString(html))
+  app.get(value.route, (req, res) => {
+    res.send(hToString(html))
+  })
 })
 
+// static assets
 app.get('/img/:fileName', (req, res) => {
   res.sendFile('./inject/img/' + req.params.fileName, {root: path.join(__dirname, '/..')})
 })
@@ -33,6 +56,10 @@ app.get('/cooper-hewitt.css', (req, res) => {
 
 app.get('/reset.css', (req, res) => {
   res.sendFile('./inject/reset.css', {root: path.join(__dirname, '/..')})
+})
+
+app.get('/js/app.js', (req, res) => {
+  res.sendFile('./inject/js/app.js', {root: path.join(__dirname, '/..')})
 })
 
 app.listen(3000, () => {

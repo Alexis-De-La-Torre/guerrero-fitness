@@ -26,13 +26,13 @@ const footer = h('footer', [
   h('a', {href: 'facebook.com/alexisdelatorre'}, 'Alexis De La Torre')
 ])
 
-const indexPage = require('./home.js')
-
-module.exports = h('div#wrapper', [
-  contactInfo,
-  h('div.line-separator', {style: {height: 1, background: styles.colors.dark}}),
-  header,
-  indexPage,
-  h('div.line-separator', {style: {height: 1, background: styles.colors.dark}}),
-  footer
-])
+module.exports = (page) => {
+  return h('div#wrapper', [
+    contactInfo,
+    h('div.line-separator', {style: {height: 1, background: styles.colors.dark}}),
+    header,
+    page,
+    h('div.line-separator', {style: {height: 1, background: styles.colors.dark}}),
+    footer
+  ])
+}

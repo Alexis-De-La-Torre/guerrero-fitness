@@ -39,7 +39,7 @@ gulp.task('default', ['server', 'watch'])
 
 gulp.task('watch', ['build'], function () {
   livereload.listen()
-  gulp.watch('./src/js/*.js', ['server', 'build'])
+  gulp.watch('./src/js/**/*.js', ['server', 'build'])
 })
 
 process.on('exit', () => {

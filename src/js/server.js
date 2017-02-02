@@ -28,6 +28,7 @@ const router = [
 _.each(router, (value) => {
   const head = h('head', [
     h('link', {rel: 'stylesheet', href: 'reset.css'}),
+    h('link', {rel: 'stylesheet', href: 'dom-tree-view.css'}),
     h('link', {rel: 'stylesheet', href: 'cooper-hewitt.css'}),
     h('link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto+Mono'})
   ])
@@ -56,6 +57,10 @@ app.get('/cooper-hewitt.css', (req, res) => {
 
 app.get('/reset.css', (req, res) => {
   res.sendFile('./assets/reset.css', {root: path.join(__dirname, '/..')})
+})
+
+app.get('/dom-tree-view.css', (req, res) => {
+  res.sendFile('./assets/dom-tree-view.css', {root: path.join(__dirname, '/..')})
 })
 
 app.get('/js/app.js', (req, res) => {

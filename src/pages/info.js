@@ -25,8 +25,10 @@ const video = h('div', [
   h('p', 'Video: Angel Paul Espinoza')
 ])
 
-module.exports = h('div.wrapper', [
-  aboutTrainer,
-  mission,
-  video
-])
+module.exports = (window) => {
+  h('div.wrapper', [
+    aboutTrainer,
+    mission,
+    video
+  ])
+}

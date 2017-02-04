@@ -19067,7 +19067,24 @@ var _ = require('lodash');
 var styles = require('./styles.js');
 
 var render = function render(browserWidth) {
-  var hero = h('div', [h('img', { src: 'img/hero-photo.jpg' }), h('h1', 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')]);
+  var maxWidth = {
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    maxWidth: styles.grid.column * 3 + styles.grid.gutter * 2, // 3 colums, 2 gutters, 2 margin = 384
+    paddingLeft: styles.baseline,
+    paddingRight: styles.baseline
+  };
+
+  var hero = h('div', { style: maxWidth }, [h('img', {
+    src: 'img/hero-photo.jpg',
+    style: {
+      width: '100%'
+    }
+  }), h('h1', { style: _.assign({}, styles.fonts.mobile.hero, {
+      marginTop: -styles.baseline
+    }) }, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')]);
+
+  console.log(styles.fonts.mobile.hero);
 
   var testimonialsData = [{
     portrait: 'img/portrait1.jpg',

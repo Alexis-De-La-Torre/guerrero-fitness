@@ -3,7 +3,7 @@ const baseline = 24
 const grid = {
   column: baseline * 4, // 96
   gutter: baseline, // 24
-  margin: {
+  padding: {
     mobile: baseline, // 24
     desktop: baseline * 2 // 48
   }
@@ -29,6 +29,10 @@ const fonts = {
     fontSize: 12,
     lineHeight: baseline + 'px',
     paddingTop: 7 // baseline fix
+  },
+  link: {
+    color: colors.accent,
+    textDecoration: 'underline'
   },
   mobile: {
     title: {

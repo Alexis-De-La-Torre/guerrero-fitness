@@ -4,27 +4,10 @@ const _ = require('lodash')
 const styles = require('./styles.js')
 
 const render = browserWidth => {
-  const maxWidth = {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    maxWidth: (styles.grid.column * 3) + (styles.grid.gutter * 2), // 3 colums, 2 gutters, 2 margin = 384
-    paddingLeft: styles.baseline,
-    paddingRight: styles.baseline
-  }
-
-  const hero = h('div', {style: maxWidth}, [
-    h('img', {
-      src: 'img/hero-photo.jpg',
-      style: {
-        width: '100%'
-      }
-    }),
-    h('h1', {style: _.assign({}, styles.fonts.mobile.hero, {
-      marginTop: -styles.baseline
-    })}, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
+  const hero = h('div', [
+    h('img', {src: 'img/hero-photo.jpg'}),
+    h('h1', 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
   ])
-
-  console.log(styles.fonts.mobile.hero)
 
   const testimonialsData = [
     {

@@ -1,4 +1,4 @@
-div , span , applet , object , iframe ,
+body, div , span , applet , object , iframe ,
 h1 , h2 , h3 , h4 , h5 , h6 , p , blockquote , pre ,
 abbr , acronym , address , big , cite , code ,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -32,10 +32,4 @@ a {
 	border: solid 2px #bac8f1;
 	margin: 10px;
 	padding: 10px;
-}
-
-#wrapper {
-	border: none;
-	margin: 0;
-	padding: 0;
 }

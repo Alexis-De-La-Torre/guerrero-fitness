@@ -34,6 +34,7 @@ _.each(router, (value) => {
   ])
 
   app.get(value.route, (req, res) => {
+    // res.send(hToString(html))
     res.send(hToString(html))
   })
 })

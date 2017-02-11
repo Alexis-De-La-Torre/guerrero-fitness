@@ -1,53 +1,57 @@
 const h = require('virtual-dom/h')
 const _ = require('lodash')
 
-const styles = require('./styles.js')
+const styles = require('../styles.js')
 
 const render = browserWidth => {
-  const hero = h('div', [
-    h('img', {src: 'img/hero-photo.jpg'}),
-    h('h1', 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
-  ])
+  const calculatedMaxWidth = _.findLast(styles.breakpoints, value => browserWidth > value) // returns undefined if browserWidth is less than the first breakpoint
 
-  const testimonialsData = [
-    {
-      portrait: 'img/portrait1.jpg',
-      text: 'Exelente atencion, sin duda el mejor gimnasio de Vicente Guerrero, muy agradable ambiente y atencion por parte de los instructores.',
-      name: 'Angel Paul Espinoza.'
-    },
-    {
-      portrait: 'img/portrait2.jpg',
-      text: 'Excelente ambiente, el entrenador muy atento con los usuarios, super recomendado',
-      name: 'Delia Lizbeth Castro'
-    },
-    {
-      portrait: 'img/portrait3.jpg',
-      text: 'Excelente atención personalizada instructor preparado para asignar rutinas y plan de nutrición',
-      name: 'Carlos Fernando Fragozo'
+  const hero = h('div', !browserWidth ? {} : {
+    style: {
+      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: styles.baseline,
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
     }
-  ]
-
-  const testimonials = h('div', [
-    h('h2', 'TESTIMONIOS'),
-    h('div', _.map(testimonialsData, (value) => {
-      return h('div', [
-        h('img', {src: value.portrait}),
-        h('img', {src: 'img/stars.svg', style: {height: styles.baseline}}),
-        h('p', value.text),
-        h('p', value.name)
-      ])
-    }))
+  }, [
+    h('div', h('img', {
+      src: 'img/hero-photo.jpg',
+      style: !browserWidth ? {} : {
+        height: browserWidth < styles.breakpoints[4] ? styles.baseline * 10 : styles.baseline * 14,
+        maxHeight: styles.baseline * 14
+      }})),
+    h('h1', !browserWidth ? {} : {style: _.assign({}, browserWidth > styles.breakpoints[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero, browserWidth > styles.breakpoints[2] ? {
+      marginLeft: -styles.baseline,
+      paddingRight: styles.baseline
+    } : {
+      marginTop: -(styles.baseline / 2) * 3
+    })}, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
   ])
 
-  const cta = h('div', [
-    h('p', 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
-    h('a', {href: '#'}, 'DESCUBRE MAS')
-  ])
+  const testimonials = h('h2', {style: _.assign({}, browserWidth > styles.breakpoints[4] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
+    maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    marginBottom: browserWidth > styles.breakpoints[4] ? (styles.baseline * 2) - styles.fonts.desktop.title.paddingTop : (styles.baseline * 2) - styles.fonts.mobile.title.paddingTop - 4,
+    paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+    paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+  })},
+  'TESTIMONIOS')
+
+  // const cta = h('div', [
+  //   h('p', 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
+  //   h('a', {href: '#'}, 'DESCUBRE MAS')
+  // ])
 
   return h('div', [
     hero,
     testimonials,
-    cta
+    require('../components/testimonials-slider.js')(browserWidth)
+    // cta
   ])
 }
 

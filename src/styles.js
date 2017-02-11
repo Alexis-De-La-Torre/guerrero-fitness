@@ -22,7 +22,7 @@ const fonts = {
     fontSize: 16,
     fontWeight: 300,
     lineHeight: baseline + 'px',
-    paddingTop: 6 // baseline fix
+    paddingTop: 7 // baseline fix
   },
   info: {
     fontFamily: 'Roboto Mono',
@@ -37,17 +37,17 @@ const fonts = {
   mobile: {
     title: {
       fontFamily: 'Cooper Hewitt',
-      fontSize: 32,
+      fontSize: 24,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px'
-      // paddingTop: 12 // baseline fix
+      lineHeight: baseline + 'px',
+      paddingTop: 12 // baseline fix
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 42,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px'
-      // paddingTop: 12 + baseline // baseline fix
+      lineHeight: baseline * 2 + 'px',
+      paddingTop: 9 // baseline fix
     }
   },
   desktop: {
@@ -55,18 +55,28 @@ const fonts = {
       fontFamily: 'Cooper Hewitt',
       fontSize: 32,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px'
-      // paddingTop: 12 // baseline fix
+      lineHeight: baseline * 2 + 'px',
+      paddingTop: 12 // baseline fix
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 64,
       fontWeight: 700,
       lineHeight: baseline * 3 + 'px'
-      // paddingTop: 12 + baseline // baseline fix
+      // paddingTop: 12 // baseline fix
     }
   }
 }
+
+const breakpoints = [
+  (grid.column * 3) + (grid.gutter * 2) + grid.padding.mobile * 2,
+  (grid.column * 4) + (grid.gutter * 3) + grid.padding.desktop * 2,
+  (grid.column * 5) + (grid.gutter * 4) + grid.padding.desktop * 2,
+  (grid.column * 6) + (grid.gutter * 5) + grid.padding.desktop * 2,
+  (grid.column * 7) + (grid.gutter * 6) + grid.padding.desktop * 2, // 864px
+  (grid.column * 8) + (grid.gutter * 7) + grid.padding.desktop * 2,
+  (grid.column * 9) + (grid.gutter * 8) + grid.padding.desktop * 2
+]
 
 // exports
 
@@ -74,5 +84,6 @@ module.exports = {
   baseline: baseline,
   grid: grid,
   fonts: fonts,
-  colors: colors
+  colors: colors,
+  breakpoints: breakpoints
 }

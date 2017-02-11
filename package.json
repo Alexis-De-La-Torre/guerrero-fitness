@@ -27,9 +27,11 @@
   },
   "dependencies": {
     "express": "^4.14.1",
+    "gsap": "^1.19.1",
     "lodash": "^4.17.4",
     "vdom-to-html": "^2.3.1",
     "vdom-virtualize": "^2.0.0",
-    "virtual-dom": "^2.1.1"
+    "virtual-dom": "^2.1.1",
+    "virtual-hyperscript-hook": "^1.0.0"
   }
 }

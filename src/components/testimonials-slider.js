@@ -38,126 +38,120 @@ const testimonialsData = [
   }
 ]
 
-let state = 0
-let transitioning = false
-let sliderNodes = []
-let hooked = 0
-let calc
+const responsive = [
+  {containerWidth: (styles.grid.column * 3) + (styles.grid.gutter * 2) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 3) + (styles.grid.gutter * 2), columns: 1},
+  {containerWidth: (styles.grid.column * 4) + (styles.grid.gutter * 3) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 4) + (styles.grid.gutter * 3), columns: 1},
+  {containerWidth: (styles.grid.column * 5) + (styles.grid.gutter * 4) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 5) + (styles.grid.gutter * 4), columns: 1},
+  {containerWidth: (styles.grid.column * 6) + (styles.grid.gutter * 5) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 3) + (styles.grid.gutter * 2), columns: 2},
+  {containerWidth: (styles.grid.column * 8) + (styles.grid.gutter * 7) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 4) + (styles.grid.gutter * 3), columns: 2},
+  {containerWidth: (styles.grid.column * 9) + (styles.grid.gutter * 8) + (styles.baseline * 4), testimonialWidth: (styles.grid.column * 3) + (styles.grid.gutter * 2), columns: 3}
+]
 
-const render = (browserWidth) => {
-  console.log('render')
+// animation stuff
+let testimonialNodes = [] // array containing the dom nodes of every testimonial (used for animating them)
+let testimonialNodesCount = 0 // lets me know when all the nodes are inside of the array
+let state = 0 // a counter that lets me know how many steps has the slider done
+let isTransitioning = false // helper for disabling click when the animation is running
+let hookedCount = 0 // counter to help me only add event to every button one time
+let currentBreakpoint
+
+const render = browserWidth => {
+  // reset animation stuff (for responsive, this renders every time the browser width changes)
   state = 0
-  transitioning = false
+  isTransitioning = false
+  _.each(testimonialNodes, testimonialNode => TweenLite.to(testimonialNode, 0, {x: 0}))
 
-  const responsive = [
-    {breakpoint: 0, style: {flexShrink: 0, flexGrow: 0, width: browserWidth - (styles.baseline * 2)}, columns: 1},
-    {breakpoint: styles.breakpoints[0], style: {flexShrink: 0, flexGrow: 0, width: browserWidth - (styles.baseline * 4)}, columns: 1},
-    {breakpoint: styles.breakpoints[3], style: {marginRight: styles.baseline, flexShrink: 0, flexGrow: 0, width: browserWidth / 2 - (styles.baseline * 3) + (styles.baseline / 2)}, columns: 2},
-    {breakpoint: styles.breakpoints[6], style: {marginRight: styles.baseline, flexShrink: 0, flexGrow: 0, width: browserWidth / 3 - (styles.baseline * 2)}, columns: 3}
-  ]
+  currentBreakpoint = _.findLast(responsive, value => browserWidth > value.containerWidth)
 
-  const calculatedWidth = _.findLast(responsive, value => browserWidth > value.breakpoint)
-  calc = calculatedWidth
+  console.log('dajkdjaskljdklasjdjaskldjkla')
+
+  const renderTestimonial = (portrait, text, name) => {
+    return h('div', !browserWidth ? {} : {
+      style: {
+        width: currentBreakpoint.testimonialWidth,
+        marginRight: styles.baseline / 2,
+        marginLeft: styles.baseline / 2,
+        flexGrow: 0,
+        flexShrink: 0
+      },
+      hook: elem => {
+        if (testimonialNodes.length < testimonialsData.length) testimonialNodes.push(elem)
+      }
+    }, [
+      h('img', {src: portrait, style: {borderRadius: '50%', marginRight: 'auto', marginLeft: 'auto'}}),
+      h('img', {src: 'img/stars.svg', style: {height: styles.baseline, marginRight: 'auto', marginLeft: 'auto', marginTop: -styles.baseline}}),
+      h('p', {style: styles.fonts.paragraph}, text),
+      h('p', {style: styles.fonts.info}, name)
+    ])
+  }
 
   const moveRigth = () => {
-    console.log(sliderNodes.length)
-    if (state > 0 && transitioning === false) {
-      _.each(sliderNodes, value => {
-        TweenLite.to(value, 0.7, {
-          x: '+=' + (calc.columns !== 1 ? calc.style.width + styles.baseline : calc.style.width),
+
+    if (state > 0 && !isTransitioning) {
+      _.each(testimonialNodes, testimonialNode => {
+        TweenLite.to(testimonialNode, 0.5, {
+          x: '+=' + (currentBreakpoint.testimonialWidth + styles.baseline),
           ease: Bounce.easeOut,
-          onStart: () => { transitioning = true },
-          onComplete: () => { transitioning = false }
+          onStart: () => { isTransitioning = true },
+          onComplete: () => { isTransitioning = false }
         })
       })
       state = state - 1
-      console.log(state)
     }
   }
 
   const moveLeft = () => {
-    console.log(sliderNodes.length)
-    if (state < sliderNodes.length - calc.columns && transitioning === false) {
-      _.each(sliderNodes, value => {
-        TweenLite.to(value, 0.7, {
-          x: '-=' + (calc.columns !== 1 ? calc.style.width + styles.baseline : calc.style.width),
+    if (state < testimonialNodes.length - currentBreakpoint.columns && !isTransitioning) {
+
+      _.each(testimonialNodes, testimonialNode => {
+        TweenLite.to(testimonialNode, 0.5, {
+          x: '-=' + (currentBreakpoint.testimonialWidth + styles.baseline),
           ease: Bounce.easeOut,
-          onStart: () => { transitioning = true },
-          onComplete: () => { transitioning = false }
+          onStart: () => { isTransitioning = true },
+          onComplete: () => { isTransitioning = false }
         })
       })
       state = state + 1
-      console.log(state)
     }
-  }
-
-  if (sliderNodes) {
-    _.each(sliderNodes, value => {
-      TweenLite.to(value, 0, {
-        x: 0,
-        ease: Bounce.easeOut,
-        onStart: () => { transitioning = true },
-        onComplete: () => { transitioning = false }
-      })
-    })
-  }
-
-  const buttonStyle = {
-    width: styles.baseline,
-    backgroundColor: styles.colors.accent,
-    color: styles.colors.complement,
-    flexShrink: 0,
-    flexGrow: 0,
-    fontWeight: 'bold'
   }
 
   return h('div', !browserWidth ? {} : {
     style: {
-      marginLeft: styles.baseline,
-      marginRight: styles.baseline
-    }
-  },
-  h('div', {style: {display: 'flex'}}, [
-    h('button', {
-      style: buttonStyle,
-      hook: elem => {
-        if (hooked !== 2) {
-          console.log('hook')
-          elem.addEventListener('click', moveRigth)
-          hooked += 1
-        }
-      }
-    }, '<'),
-    h('div', {style: {
       display: 'flex',
-      width: browserWidth - (styles.baseline * 2),
-      overflow: 'hidden'
-    }},
-    _.map(testimonialsData, (value) => {
-      return h('div', {
-        hook: elem => {
-          // console.log(sliderNodes.length)
-          if (sliderNodes.length < testimonialsData.length) sliderNodes.push(elem)
-        },
-        style: !browserWidth ? {} : calculatedWidth.style}, [
-          h('img', {src: value.portrait, style: {borderRadius: '50%', marginRight: 'auto', marginLeft: 'auto'}}),
-          h('img', {src: 'img/stars.svg', style: {height: styles.baseline, marginRight: 'auto', marginLeft: 'auto', marginTop: -styles.baseline}}),
-          h('p', {style: styles.fonts.paragraph}, value.text),
-          h('p', {style: styles.fonts.info}, value.name)
-        ])
-    })),
-    h('button#h', {
-      style: buttonStyle,
+      width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth : responsive[0].containerWidth,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: styles.baseline * 4
+    }
+  }, [
+    h('button', {
+      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: 'blue'},
       hook: elem => {
-        if (hooked !== 2) {
-          elem.addEventListener('click', moveLeft)
-          hooked += 1
+        if (hookedCount < 2) {
+          elem.addEventListener('click', moveRigth)
+          hookedCount += 1
         }
       }
-    }, '>')
-  ]))
+    }, '◀'),
+    h('div', !browserWidth ? {} : {
+      style: {
+        display: 'flex',
+        width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth - styles.baseline * 3 : responsive[0].containerWidth,
+        flexGrow: 0,
+        flexShrink: currentBreakpoint !== undefined ? 0 : 1,
+        overflow: 'hidden'
+      }
+    }, _.map(testimonialsData, testimonial => renderTestimonial(testimonial.portrait, testimonial.text, testimonial.name))),
+    h('button', {
+      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginLeft: 12, color: 'white', backgroundColor: 'blue'},
+      hook: elem => {
+        if (hookedCount < 2) {
+          elem.addEventListener('click', moveLeft)
+          hookedCount += 1
+        }
+      }
+    }, '▶')
+  ])
 }
 
-module.exports = (browserWidth) => {
-  return render(browserWidth)
-}
+module.exports = browserWidth => render(browserWidth)

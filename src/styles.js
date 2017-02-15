@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const baseline = 24
 
 const grid = {
@@ -68,6 +70,16 @@ const fonts = {
   }
 }
 
+const button = _.assign({}, fonts.mobile.title, {
+  fontSize: 16,
+  color: colors.complement,
+  backgroundColor: colors.accent,
+  paddingTop: (baseline / 2) + fonts.mobile.title.paddingTop,
+  paddingBottom: (baseline / 2) + fonts.mobile.title.paddingTop,
+  paddingLeft: baseline,
+  paddingRight: baseline
+})
+
 const breakpoints = [
   (grid.column * 3) + (grid.gutter * 2) + grid.padding.mobile * 2,
   (grid.column * 4) + (grid.gutter * 3) + grid.padding.desktop * 2,
@@ -85,5 +97,6 @@ module.exports = {
   grid: grid,
   fonts: fonts,
   colors: colors,
-  breakpoints: breakpoints
+  breakpoints: breakpoints,
+  button: button
 }

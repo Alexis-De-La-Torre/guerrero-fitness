@@ -130,7 +130,7 @@ function EvStore(elem) {
     return hash;
 }
 
-},{"individual/one-version":7}],4:[function(require,module,exports){
+},{"individual/one-version":8}],4:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -150,6 +150,227 @@ if (typeof document !== 'undefined') {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"min-document":1}],5:[function(require,module,exports){
+(function(root, factory) {
+
+	if (root === null) {
+		throw new Error('Google-maps package can be used only in browser');
+	}
+
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof exports === 'object') {
+		module.exports = factory();
+	} else {
+		root.GoogleMapsLoader = factory();
+	}
+
+})(typeof window !== 'undefined' ? window : null, function() {
+
+
+	'use strict';
+
+
+	var googleVersion = '3.18';
+
+	var script = null;
+
+	var google = null;
+
+	var loading = false;
+
+	var callbacks = [];
+
+	var onLoadEvents = [];
+
+	var originalCreateLoaderMethod = null;
+
+
+	var GoogleMapsLoader = {};
+
+
+	GoogleMapsLoader.URL = 'https://maps.googleapis.com/maps/api/js';
+
+	GoogleMapsLoader.KEY = null;
+
+	GoogleMapsLoader.LIBRARIES = [];
+
+	GoogleMapsLoader.CLIENT = null;
+
+	GoogleMapsLoader.CHANNEL = null;
+
+	GoogleMapsLoader.LANGUAGE = null;
+
+	GoogleMapsLoader.REGION = null;
+
+	GoogleMapsLoader.VERSION = googleVersion;
+
+	GoogleMapsLoader.WINDOW_CALLBACK_NAME = '__google_maps_api_provider_initializator__';
+
+
+	GoogleMapsLoader._googleMockApiObject = {};
+
+
+	GoogleMapsLoader.load = function(fn) {
+		if (google === null) {
+			if (loading === true) {
+				if (fn) {
+					callbacks.push(fn);
+				}
+			} else {
+				loading = true;
+
+				window[GoogleMapsLoader.WINDOW_CALLBACK_NAME] = function() {
+					ready(fn);
+				};
+
+				GoogleMapsLoader.createLoader();
+			}
+		} else if (fn) {
+			fn(google);
+		}
+	};
+
+
+	GoogleMapsLoader.createLoader = function() {
+		script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = GoogleMapsLoader.createUrl();
+
+		document.body.appendChild(script);
+	};
+
+
+	GoogleMapsLoader.isLoaded = function() {
+		return google !== null;
+	};
+
+
+	GoogleMapsLoader.createUrl = function() {
+		var url = GoogleMapsLoader.URL;
+
+		url += '?callback=' + GoogleMapsLoader.WINDOW_CALLBACK_NAME;
+
+		if (GoogleMapsLoader.KEY) {
+			url += '&key=' + GoogleMapsLoader.KEY;
+		}
+
+		if (GoogleMapsLoader.LIBRARIES.length > 0) {
+			url += '&libraries=' + GoogleMapsLoader.LIBRARIES.join(',');
+		}
+
+		if (GoogleMapsLoader.CLIENT) {
+			url += '&client=' + GoogleMapsLoader.CLIENT + '&v=' + GoogleMapsLoader.VERSION;
+		}
+
+		if (GoogleMapsLoader.CHANNEL) {
+			url += '&channel=' + GoogleMapsLoader.CHANNEL;
+		}
+
+		if (GoogleMapsLoader.LANGUAGE) {
+			url += '&language=' + GoogleMapsLoader.LANGUAGE;
+		}
+
+		if (GoogleMapsLoader.REGION) {
+			url += '&region=' + GoogleMapsLoader.REGION;
+		}
+
+		return url;
+	};
+
+
+	GoogleMapsLoader.release = function(fn) {
+		var release = function() {
+			GoogleMapsLoader.KEY = null;
+			GoogleMapsLoader.LIBRARIES = [];
+			GoogleMapsLoader.CLIENT = null;
+			GoogleMapsLoader.CHANNEL = null;
+			GoogleMapsLoader.LANGUAGE = null;
+			GoogleMapsLoader.REGION = null;
+			GoogleMapsLoader.VERSION = googleVersion;
+
+			google = null;
+			loading = false;
+			callbacks = [];
+			onLoadEvents = [];
+
+			if (typeof window.google !== 'undefined') {
+				delete window.google;
+			}
+
+			if (typeof window[GoogleMapsLoader.WINDOW_CALLBACK_NAME] !== 'undefined') {
+				delete window[GoogleMapsLoader.WINDOW_CALLBACK_NAME];
+			}
+
+			if (originalCreateLoaderMethod !== null) {
+				GoogleMapsLoader.createLoader = originalCreateLoaderMethod;
+				originalCreateLoaderMethod = null;
+			}
+
+			if (script !== null) {
+				script.parentElement.removeChild(script);
+				script = null;
+			}
+
+			if (fn) {
+				fn();
+			}
+		};
+
+		if (loading) {
+			GoogleMapsLoader.load(function() {
+				release();
+			});
+		} else {
+			release();
+		}
+	};
+
+
+	GoogleMapsLoader.onLoad = function(fn) {
+		onLoadEvents.push(fn);
+	};
+
+
+	GoogleMapsLoader.makeMock = function() {
+		originalCreateLoaderMethod = GoogleMapsLoader.createLoader;
+
+		GoogleMapsLoader.createLoader = function() {
+			window.google = GoogleMapsLoader._googleMockApiObject;
+			window[GoogleMapsLoader.WINDOW_CALLBACK_NAME]();
+		};
+	};
+
+
+	var ready = function(fn) {
+		var i;
+
+		loading = false;
+
+		if (google === null) {
+			google = window.google;
+		}
+
+		for (i = 0; i < onLoadEvents.length; i++) {
+			onLoadEvents[i](google);
+		}
+
+		if (fn) {
+			fn(google);
+		}
+
+		for (i = 0; i < callbacks.length; i++) {
+			callbacks[i](google);
+		}
+
+		callbacks = [];
+	};
+
+
+	return GoogleMapsLoader;
+
+});
+
+},{}],6:[function(require,module,exports){
 (function (global){
 /*!
  * VERSION: 1.19.1
@@ -8009,7 +8230,7 @@ if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); } //necessary in case Tween
 
 })((typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window, "TweenMax");
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -8032,7 +8253,7 @@ function Individual(key, value) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Individual = require('./index.js');
@@ -8056,14 +8277,14 @@ function OneVersion(moduleName, version, defaultValue) {
     return Individual(key, defaultValue);
 }
 
-},{"./index.js":6}],8:[function(require,module,exports){
+},{"./index.js":7}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
 	return typeof x === "object" && x !== null;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -25151,7 +25372,7 @@ module.exports = function isObject(x) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*!
 * vdom-virtualize
 * Copyright 2014 by Marcel Klehr <mklehr@gmx.net>
@@ -25395,7 +25616,7 @@ module.exports.attrBlacklist = {
   'class': 'className'
 }
 
-},{"./vcomment":11,"virtual-dom/vnode/vnode":34,"virtual-dom/vnode/vtext":36}],11:[function(require,module,exports){
+},{"./vcomment":12,"virtual-dom/vnode/vnode":35,"virtual-dom/vnode/vtext":37}],12:[function(require,module,exports){
 module.exports = VirtualComment
 
 function VirtualComment(text) {
@@ -25413,22 +25634,22 @@ VirtualComment.prototype.update = function(previous, domNode) {
   domNode.nodeValue = this.text
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var createElement = require("./vdom/create-element.js")
 
 module.exports = createElement
 
-},{"./vdom/create-element.js":18}],13:[function(require,module,exports){
+},{"./vdom/create-element.js":19}],14:[function(require,module,exports){
 var diff = require("./vtree/diff.js")
 
 module.exports = diff
 
-},{"./vtree/diff.js":38}],14:[function(require,module,exports){
+},{"./vtree/diff.js":39}],15:[function(require,module,exports){
 var h = require("./virtual-hyperscript/index.js")
 
 module.exports = h
 
-},{"./virtual-hyperscript/index.js":25}],15:[function(require,module,exports){
+},{"./virtual-hyperscript/index.js":26}],16:[function(require,module,exports){
 var diff = require("./diff.js")
 var patch = require("./patch.js")
 var h = require("./h.js")
@@ -25445,12 +25666,12 @@ module.exports = {
     VText: VText
 }
 
-},{"./create-element.js":12,"./diff.js":13,"./h.js":14,"./patch.js":16,"./vnode/vnode.js":34,"./vnode/vtext.js":36}],16:[function(require,module,exports){
+},{"./create-element.js":13,"./diff.js":14,"./h.js":15,"./patch.js":17,"./vnode/vnode.js":35,"./vnode/vtext.js":37}],17:[function(require,module,exports){
 var patch = require("./vdom/patch.js")
 
 module.exports = patch
 
-},{"./vdom/patch.js":21}],17:[function(require,module,exports){
+},{"./vdom/patch.js":22}],18:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook.js")
 
@@ -25549,7 +25770,7 @@ function getPrototype(value) {
     }
 }
 
-},{"../vnode/is-vhook.js":29,"is-object":8}],18:[function(require,module,exports){
+},{"../vnode/is-vhook.js":30,"is-object":9}],19:[function(require,module,exports){
 var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
@@ -25597,7 +25818,7 @@ function createElement(vnode, opts) {
     return node
 }
 
-},{"../vnode/handle-thunk.js":27,"../vnode/is-vnode.js":30,"../vnode/is-vtext.js":31,"../vnode/is-widget.js":32,"./apply-properties":17,"global/document":4}],19:[function(require,module,exports){
+},{"../vnode/handle-thunk.js":28,"../vnode/is-vnode.js":31,"../vnode/is-vtext.js":32,"../vnode/is-widget.js":33,"./apply-properties":18,"global/document":4}],20:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
@@ -25684,7 +25905,7 @@ function ascending(a, b) {
     return a > b ? 1 : -1
 }
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
 
 var isWidget = require("../vnode/is-widget.js")
@@ -25837,7 +26058,7 @@ function replaceRoot(oldRoot, newRoot) {
     return newRoot;
 }
 
-},{"../vnode/is-widget.js":32,"../vnode/vpatch.js":35,"./apply-properties":17,"./update-widget":22}],21:[function(require,module,exports){
+},{"../vnode/is-widget.js":33,"../vnode/vpatch.js":36,"./apply-properties":18,"./update-widget":23}],22:[function(require,module,exports){
 var document = require("global/document")
 var isArray = require("x-is-array")
 
@@ -25919,7 +26140,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./create-element":18,"./dom-index":19,"./patch-op":20,"global/document":4,"x-is-array":40}],22:[function(require,module,exports){
+},{"./create-element":19,"./dom-index":20,"./patch-op":21,"global/document":4,"x-is-array":41}],23:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -25936,7 +26157,7 @@ function updateWidget(a, b) {
     return false
 }
 
-},{"../vnode/is-widget.js":32}],23:[function(require,module,exports){
+},{"../vnode/is-widget.js":33}],24:[function(require,module,exports){
 'use strict';
 
 var EvStore = require('ev-store');
@@ -25965,7 +26186,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
     es[propName] = undefined;
 };
 
-},{"ev-store":3}],24:[function(require,module,exports){
+},{"ev-store":3}],25:[function(require,module,exports){
 'use strict';
 
 module.exports = SoftSetHook;
@@ -25984,7 +26205,7 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
     }
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 var isArray = require('x-is-array');
@@ -26123,7 +26344,7 @@ function errorString(obj) {
     }
 }
 
-},{"../vnode/is-thunk":28,"../vnode/is-vhook":29,"../vnode/is-vnode":30,"../vnode/is-vtext":31,"../vnode/is-widget":32,"../vnode/vnode.js":34,"../vnode/vtext.js":36,"./hooks/ev-hook.js":23,"./hooks/soft-set-hook.js":24,"./parse-tag.js":26,"x-is-array":40}],26:[function(require,module,exports){
+},{"../vnode/is-thunk":29,"../vnode/is-vhook":30,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vnode.js":35,"../vnode/vtext.js":37,"./hooks/ev-hook.js":24,"./hooks/soft-set-hook.js":25,"./parse-tag.js":27,"x-is-array":41}],27:[function(require,module,exports){
 'use strict';
 
 var split = require('browser-split');
@@ -26179,7 +26400,7 @@ function parseTag(tag, props) {
     return props.namespace ? tagName : tagName.toUpperCase();
 }
 
-},{"browser-split":2}],27:[function(require,module,exports){
+},{"browser-split":2}],28:[function(require,module,exports){
 var isVNode = require("./is-vnode")
 var isVText = require("./is-vtext")
 var isWidget = require("./is-widget")
@@ -26221,14 +26442,14 @@ function renderThunk(thunk, previous) {
     return renderedThunk
 }
 
-},{"./is-thunk":28,"./is-vnode":30,"./is-vtext":31,"./is-widget":32}],28:[function(require,module,exports){
+},{"./is-thunk":29,"./is-vnode":31,"./is-vtext":32,"./is-widget":33}],29:[function(require,module,exports){
 module.exports = isThunk
 
 function isThunk(t) {
     return t && t.type === "Thunk"
 }
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = isHook
 
 function isHook(hook) {
@@ -26237,7 +26458,7 @@ function isHook(hook) {
        typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualNode
@@ -26246,7 +26467,7 @@ function isVirtualNode(x) {
     return x && x.type === "VirtualNode" && x.version === version
 }
 
-},{"./version":33}],31:[function(require,module,exports){
+},{"./version":34}],32:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualText
@@ -26255,17 +26476,17 @@ function isVirtualText(x) {
     return x && x.type === "VirtualText" && x.version === version
 }
 
-},{"./version":33}],32:[function(require,module,exports){
+},{"./version":34}],33:[function(require,module,exports){
 module.exports = isWidget
 
 function isWidget(w) {
     return w && w.type === "Widget"
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = "2"
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var version = require("./version")
 var isVNode = require("./is-vnode")
 var isWidget = require("./is-widget")
@@ -26339,7 +26560,7 @@ function VirtualNode(tagName, properties, children, key, namespace) {
 VirtualNode.prototype.version = version
 VirtualNode.prototype.type = "VirtualNode"
 
-},{"./is-thunk":28,"./is-vhook":29,"./is-vnode":30,"./is-widget":32,"./version":33}],35:[function(require,module,exports){
+},{"./is-thunk":29,"./is-vhook":30,"./is-vnode":31,"./is-widget":33,"./version":34}],36:[function(require,module,exports){
 var version = require("./version")
 
 VirtualPatch.NONE = 0
@@ -26363,7 +26584,7 @@ function VirtualPatch(type, vNode, patch) {
 VirtualPatch.prototype.version = version
 VirtualPatch.prototype.type = "VirtualPatch"
 
-},{"./version":33}],36:[function(require,module,exports){
+},{"./version":34}],37:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = VirtualText
@@ -26375,7 +26596,7 @@ function VirtualText(text) {
 VirtualText.prototype.version = version
 VirtualText.prototype.type = "VirtualText"
 
-},{"./version":33}],37:[function(require,module,exports){
+},{"./version":34}],38:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook")
 
@@ -26435,7 +26656,7 @@ function getPrototype(value) {
   }
 }
 
-},{"../vnode/is-vhook":29,"is-object":8}],38:[function(require,module,exports){
+},{"../vnode/is-vhook":30,"is-object":9}],39:[function(require,module,exports){
 var isArray = require("x-is-array")
 
 var VPatch = require("../vnode/vpatch")
@@ -26864,7 +27085,7 @@ function appendPatch(apply, patch) {
     }
 }
 
-},{"../vnode/handle-thunk":27,"../vnode/is-thunk":28,"../vnode/is-vnode":30,"../vnode/is-vtext":31,"../vnode/is-widget":32,"../vnode/vpatch":35,"./diff-props":37,"x-is-array":40}],39:[function(require,module,exports){
+},{"../vnode/handle-thunk":28,"../vnode/is-thunk":29,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vpatch":36,"./diff-props":38,"x-is-array":41}],40:[function(require,module,exports){
 var isArray = require('x-is-array');
 
 module.exports = function (h, opts) {
@@ -26906,7 +27127,7 @@ function isChildren(x) {
 
 function isfn (x) { return typeof x === 'function' }
 
-},{"x-is-array":40}],40:[function(require,module,exports){
+},{"x-is-array":41}],41:[function(require,module,exports){
 var nativeIsArray = Array.isArray
 var toString = Object.prototype.toString
 
@@ -26916,7 +27137,7 @@ function isArray(obj) {
     return toString.call(obj) === "[object Array]"
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 var domready = require('domready');
@@ -26943,10 +27164,32 @@ domready(function () {
     tree = newTree;
   });
 
+  var GoogleMapsLoader = require('google-maps');
+
+  var uluru = { lat: 30.723390, lng: -115.989136 };
+
+  GoogleMapsLoader.KEY = 'AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE';
+
+  GoogleMapsLoader.load(function (google) {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: uluru,
+      zoom: 18
+    });
+
+    new google.maps.Marker({
+      position: uluru,
+      map: map
+    });
+  });
+
+  GoogleMapsLoader.onLoad(function (google) {
+    console.log('I just loaded google maps api');
+  });
+
   console.log(require('./styles.js').breakpoints);
 });
 
-},{"./router.js":47,"./styles.js":48,"domready":49,"lodash":9,"vdom-virtualize":10,"virtual-dom":15}],42:[function(require,module,exports){
+},{"./router.js":48,"./styles.js":49,"domready":50,"google-maps":5,"lodash":10,"vdom-virtualize":11,"virtual-dom":16}],43:[function(require,module,exports){
 'use strict';
 
 var vdom = require('virtual-dom');
@@ -27004,12 +27247,10 @@ var render = function render(browserWidth) {
     return browserWidth > value.containerWidth;
   });
 
-  console.log('dajkdjaskljdklasjdjaskldjkla');
-
   var renderTestimonial = function renderTestimonial(portrait, text, name) {
     return h('div', !browserWidth ? {} : {
       style: {
-        width: currentBreakpoint.testimonialWidth,
+        width: !currentBreakpoint ? responsive[0].testimonialWidth : currentBreakpoint.testimonialWidth,
         marginRight: styles.baseline / 2,
         marginLeft: styles.baseline / 2,
         flexGrow: 0,
@@ -27065,7 +27306,8 @@ var render = function render(browserWidth) {
       width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginTop: styles.baseline * 4
+      marginTop: styles.baseline * 4,
+      marginBottom: styles.baseline * 4 - 2
     }
   }, [h('button', {
     style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: 'blue' },
@@ -27100,23 +27342,74 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles.js":48,"gsap":5,"lodash":9,"virtual-dom":15,"virtual-hyperscript-hook":39}],43:[function(require,module,exports){
+},{"../styles.js":49,"gsap":6,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],44:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
 var _ = require('lodash');
 
-var render = function render(browserWidth) {
-  var direction = h('div', [h('h2', 'VEN A VISITARNOS'), h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico'), h('p', '// map placeholder')]);
+var styles = require('../styles.js');
 
-  return [direction];
+var render = function render(browserWidth) {
+  var calculatedMaxWidth = _.findLast(styles.breakpoints, function (value) {
+    return browserWidth > value;
+  }); // returns undefined if browserWidth is less than the first breakpoint
+
+  var numberAndEmail = h('div', {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [h('a', _.assign({}, { href: 'tel:+526161175551' }, !browserWidth ? {} : {
+    style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({ width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2 }, styles.button)
+  }), '(616) 117-5551'), h('a', _.assign({}, { href: 'mailto:contacto@guerrerofitness.mx' }, !browserWidth ? {} : {
+    style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({ width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4 }, styles.button)
+  }), 'CONTACTO@GUERREROFITNESS.MX')]);
+
+  var direction = h('div', {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [h('h2', !browserWidth ? {} : {
+    style: browserWidth > styles.breakpoints[1] ? _.assign({}, styles.fonts.desktop.title, { marginTop: -styles.baseline }) : styles.fonts.mobile.title
+  }, 'VEN A VISITARNOS'), h('p', { style: styles.fonts.info }, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
+
+  var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
+
+  var currentBreakpoint = _.findLast(responsive, function (value) {
+    return browserWidth > value;
+  });
+
+  console.log(currentBreakpoint);
+
+  var map = h('div#map', {
+    style: {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
+      height: styles.baseline * 14,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: styles.baseline * 4,
+      backgroundColor: 'coral'
+    }
+  }, 'djadhakjshdkjash');
+
+  return h('div.wrapper', [numberAndEmail, direction, map]);
 };
 
 module.exports = function (browserWidth) {
-  return h('div.wrapper', _.union([h('a', { href: 'tel:+526161175551' }, '(616) 117-5551'), h('a', { href: 'tel:+526161175551' }, 'CONTACTO@GUERREROFITNESS.MX')], render(browserWidth)));
+  return render(browserWidth);
 };
 
-},{"lodash":9,"virtual-dom/h":14}],44:[function(require,module,exports){
+},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],45:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -27152,7 +27445,7 @@ var render = function render(browserWidth) {
       marginTop: -(styles.baseline / 2) * 3
     }) }, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')]);
 
-  var testimonials = h('h2', { style: _.assign({}, browserWidth > styles.breakpoints[4] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
+  var testimonials = h('h2', { style: _.assign({}, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
       maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
       marginRight: 'auto',
       marginLeft: 'auto',
@@ -27161,21 +27454,25 @@ var render = function render(browserWidth) {
       paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
     }) }, 'TESTIMONIOS');
 
-  // const cta = h('div', [
-  //   h('p', 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
-  //   h('a', {href: '#'}, 'DESCUBRE MAS')
-  // ])
+  var cta = h('div', !browserWidth ? {} : {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: styles.breakpoints[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [h('p', { style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '#', style: _.assign({}, styles.fonts.link, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
 
-  return h('div', [hero, testimonials, require('../components/testimonials-slider.js')(browserWidth)
-  // cta
-  ]);
+  return h('div', [hero, testimonials, require('../components/testimonials-slider.js')(browserWidth), cta]);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../components/testimonials-slider.js":42,"../styles.js":48,"lodash":9,"virtual-dom/h":14}],45:[function(require,module,exports){
+},{"../components/testimonials-slider.js":43,"../styles.js":49,"lodash":10,"virtual-dom/h":15}],46:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -27226,32 +27523,68 @@ var render = function render(page, browserWidth) {
       paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
     }) }, [h('p', { style: { display: 'inline' } }, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '), h('a', { href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'Alexis De La Torre')]);
 
-  return h('div#wrapper', [contactInfo, h('div.line-separator', { style: { height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: styles.baseline / 2 * 5 - 1 } }), header, page(browserWidth)
-  // h('div.line-separator', {style: {height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: (styles.baseline / 2 * 1) - 1}})
-  // footer
-  ]);
+  return h('div#wrapper', [contactInfo, h('div.line-separator', { style: { height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: styles.baseline / 2 * 5 - 1 } }), header, page(browserWidth), h('div.line-separator', { style: { height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: styles.baseline / 2 * 1 - 1 } }), footer]);
 };
 
 module.exports = function (page, browserWidth) {
   return render(page, browserWidth);
 };
 
-},{"../styles.js":48,"lodash":9,"virtual-dom/h":14}],46:[function(require,module,exports){
+},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
+var _ = require('lodash');
 
-var aboutTrainer = h('div', [h('img', { src: 'img/trainer-photo.jpg' }), h('h2', 'Angel Fermin Cortez.'), h('p', 'Entrenador Personal  ||  Director General'), h('ul', [h('li', 'Entrenamiento Femenino'), h('li', 'Biomecanica del ejercicio'), h('li', 'Sistemas actualizados de entrenamiento'), h('li', 'Entrenamiento correctivo'), h('li', 'Entrenamiento en edad adulta'), h('li', 'Biomecanica aplicada al entrenamiento')])]);
+var styles = require('../styles.js');
 
-var mission = h('div', [h('p', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', 'Y POR ESO #SOYGUERRERO')]);
+var render = function render(browserWidth) {
+  var calculatedMaxWidth = _.findLast(_.take(styles.breakpoints, 4), function (value) {
+    return browserWidth > value;
+  }); // returns undefined if browserWidth is less than the first breakpoint
 
-var video = h('div', [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0' }), h('p', 'Video: Angel Paul Espinoza')]);
+  var aboutTrainer = h('div', !browserWidth ? {} : {
+    style: {
+      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: styles.baseline,
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [h('img', { src: 'img/trainer-photo.jpg', style: { width: styles.baseline * 11, marginRight: browserWidth > styles.breakpoints[2] ? styles.baseline : 0 } }), h('div', [h('h2', !browserWidth ? {} : { style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'ANGEL FERMIN CORTEZ.'), h('p', { style: _.assign({}, styles.fonts.info, { color: styles.colors.accent, marginTop: -styles.baseline / 2, marginBottom: styles.baseline - styles.fonts.info.paddingTop }) }, 'Entrenador Personal  ||  Director General'), h('ul', { style: styles.fonts.paragraph }, [h('li', '— Entrenamiento Femenino'), h('li', '— Biomecanica del ejercicio'), h('li', '— Sistemas actualizados de entrenamiento'), h('li', '— Entrenamiento correctivo'), h('li', '— Entrenamiento en edad adulta'), h('li', '— Biomecanica aplicada al entrenamiento')])])]);
 
-module.exports = function (window) {
-  h('div.wrapper', [aboutTrainer, mission, video]);
+  var mission = h('div', !browserWidth ? {} : {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: styles.baseline,
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', { style: browserWidth > styles.breakpoints[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y POR ESO #SOYGUERRERO')]);
+
+  var video = h('div', {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+    }
+  }, [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: { width: '100%', height: 'auto' } }), h('p', 'Video: Angel Paul Espinoza')]);
+
+  return h('div.wrapper', [aboutTrainer, mission, video]);
 };
 
-},{"virtual-dom/h":14}],47:[function(require,module,exports){
+module.exports = function (browserWidth) {
+  return render(browserWidth);
+};
+
+},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],48:[function(require,module,exports){
 'use strict';
 
 var indexPage = require('./pages/index.js');
@@ -27269,8 +27602,10 @@ module.exports = function (browserWidth) {
   }];
 };
 
-},{"./pages/contact.js":43,"./pages/home.js":44,"./pages/index.js":45,"./pages/info.js":46}],48:[function(require,module,exports){
+},{"./pages/contact.js":44,"./pages/home.js":45,"./pages/index.js":46,"./pages/info.js":47}],49:[function(require,module,exports){
 'use strict';
+
+var _ = require('lodash');
 
 var baseline = 24;
 
@@ -27342,6 +27677,16 @@ var fonts = {
   }
 };
 
+var button = _.assign({}, fonts.mobile.title, {
+  fontSize: 16,
+  color: colors.complement,
+  backgroundColor: colors.accent,
+  paddingTop: baseline / 2 + fonts.mobile.title.paddingTop,
+  paddingBottom: baseline / 2 + fonts.mobile.title.paddingTop,
+  paddingLeft: baseline,
+  paddingRight: baseline
+});
+
 var breakpoints = [grid.column * 3 + grid.gutter * 2 + grid.padding.mobile * 2, grid.column * 4 + grid.gutter * 3 + grid.padding.desktop * 2, grid.column * 5 + grid.gutter * 4 + grid.padding.desktop * 2, grid.column * 6 + grid.gutter * 5 + grid.padding.desktop * 2, grid.column * 7 + grid.gutter * 6 + grid.padding.desktop * 2, // 864px
 grid.column * 8 + grid.gutter * 7 + grid.padding.desktop * 2, grid.column * 9 + grid.gutter * 8 + grid.padding.desktop * 2];
 
@@ -27352,10 +27697,11 @@ module.exports = {
   grid: grid,
   fonts: fonts,
   colors: colors,
-  breakpoints: breakpoints
+  breakpoints: breakpoints,
+  button: button
 };
 
-},{}],49:[function(require,module,exports){
+},{"lodash":10}],50:[function(require,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */
@@ -27387,4 +27733,4 @@ module.exports = {
 
 });
 
-},{}]},{},[41]);
+},{}]},{},[42]);

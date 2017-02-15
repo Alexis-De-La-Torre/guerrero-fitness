@@ -21,6 +21,7 @@ _.each(router, (value) => {
   ])
 
   const scripts = h('div#scripts', [
+    // h('script', {src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE&callback=initMap'}),
     h('script', {src: 'js/app.js'}),
     h('script', {src: 'http://' + ('localhost').split(':')[0] + ':35729/livereload.js?snipver=1'})
   ])

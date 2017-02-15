@@ -74,9 +74,9 @@ const render = (page, browserWidth) => {
     contactInfo,
     h('div.line-separator', {style: {height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: (styles.baseline / 2 * 5) - 1}}),
     header,
-    page(browserWidth)
-    // h('div.line-separator', {style: {height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: (styles.baseline / 2 * 1) - 1}})
-    // footer
+    page(browserWidth),
+    h('div.line-separator', {style: {height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: (styles.baseline / 2 * 1) - 1}}),
+    footer
   ])
 }
 

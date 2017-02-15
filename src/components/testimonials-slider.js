@@ -63,12 +63,10 @@ const render = browserWidth => {
 
   currentBreakpoint = _.findLast(responsive, value => browserWidth > value.containerWidth)
 
-  console.log('dajkdjaskljdklasjdjaskldjkla')
-
   const renderTestimonial = (portrait, text, name) => {
     return h('div', !browserWidth ? {} : {
       style: {
-        width: currentBreakpoint.testimonialWidth,
+        width: !currentBreakpoint ? responsive[0].testimonialWidth : currentBreakpoint.testimonialWidth,
         marginRight: styles.baseline / 2,
         marginLeft: styles.baseline / 2,
         flexGrow: 0,
@@ -121,7 +119,8 @@ const render = browserWidth => {
       width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginTop: styles.baseline * 4
+      marginTop: styles.baseline * 4,
+      marginBottom: (styles.baseline * 4) - 2
     }
   }, [
     h('button', {

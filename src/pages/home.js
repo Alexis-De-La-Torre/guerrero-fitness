@@ -32,7 +32,7 @@ const render = browserWidth => {
     })}, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
   ])
 
-  const testimonials = h('h2', {style: _.assign({}, browserWidth > styles.breakpoints[4] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
+  const testimonials = h('h2', {style: _.assign({}, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
     maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
     marginRight: 'auto',
     marginLeft: 'auto',
@@ -42,16 +42,25 @@ const render = browserWidth => {
   })},
   'TESTIMONIOS')
 
-  // const cta = h('div', [
-  //   h('p', 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
-  //   h('a', {href: '#'}, 'DESCUBRE MAS')
-  // ])
+  const cta = h('div', !browserWidth ? {} : {
+    style: {
+      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: styles.breakpoints[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop,
+      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
+      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+    }
+  }, [
+    h('p', {style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
+    h('a', {href: '#', style: _.assign({}, styles.fonts.link, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title)}, 'DESCUBRE MAS')
+  ])
 
   return h('div', [
     hero,
     testimonials,
-    require('../components/testimonials-slider.js')(browserWidth)
-    // cta
+    require('../components/testimonials-slider.js')(browserWidth),
+    cta
   ])
 }
 

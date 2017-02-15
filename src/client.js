@@ -22,5 +22,27 @@ domready(() => {
     tree = newTree
   })
 
+  const GoogleMapsLoader = require('google-maps')
+
+  const uluru = {lat: 30.723390, lng: -115.989136}
+
+  GoogleMapsLoader.KEY = 'AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE'
+
+  GoogleMapsLoader.load(google => {
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: uluru,
+      zoom: 18
+    })
+
+    new google.maps.Marker({
+      position: uluru,
+      map: map
+    })
+  })
+
+  GoogleMapsLoader.onLoad((google) => {
+    console.log('I just loaded google maps api')
+  })
+
   console.log(require('./styles.js').breakpoints)
 })

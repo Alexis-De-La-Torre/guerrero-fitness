@@ -4,11 +4,7 @@ const baseline = 24
 
 const grid = {
   column: baseline * 4, // 96
-  gutter: baseline, // 24
-  padding: {
-    mobile: baseline, // 24
-    desktop: baseline * 2 // 48
-  }
+  gutter: baseline // 24
 }
 
 const colors = {
@@ -80,16 +76,6 @@ const button = _.assign({}, fonts.mobile.title, {
   paddingRight: baseline
 })
 
-const breakpoints = [
-  (grid.column * 3) + (grid.gutter * 2) + grid.padding.mobile * 2,
-  (grid.column * 4) + (grid.gutter * 3) + grid.padding.desktop * 2,
-  (grid.column * 5) + (grid.gutter * 4) + grid.padding.desktop * 2,
-  (grid.column * 6) + (grid.gutter * 5) + grid.padding.desktop * 2,
-  (grid.column * 7) + (grid.gutter * 6) + grid.padding.desktop * 2, // 864px
-  (grid.column * 8) + (grid.gutter * 7) + grid.padding.desktop * 2,
-  (grid.column * 9) + (grid.gutter * 8) + grid.padding.desktop * 2
-]
-
 // exports
 
 module.exports = {
@@ -97,6 +83,5 @@ module.exports = {
   grid: grid,
   fonts: fonts,
   colors: colors,
-  breakpoints: breakpoints,
   button: button
 }

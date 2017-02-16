@@ -1,73 +1,83 @@
-const h = require('virtual-dom/h')
+const vdom = require('virtual-dom')
+const h = require('virtual-hyperscript-hook')(vdom.h)
 const _ = require('lodash')
+
+// Components
+const header = require('../components/header.js')
+const footer = require('../components/footer.js')
 
 const styles = require('../styles.js')
 
+const responsive = [
+  (styles.grid.column * 3) + (styles.grid.gutter * 2) + (styles.baseline * 4),
+  (styles.grid.column * 4) + (styles.grid.gutter * 3) + (styles.baseline * 4),
+  (styles.grid.column * 5) + (styles.grid.gutter * 4) + (styles.baseline * 4),
+  (styles.grid.column * 6) + (styles.grid.gutter * 5) + (styles.baseline * 4),
+  (styles.grid.column * 8) + (styles.grid.gutter * 7) + (styles.baseline * 4),
+  (styles.grid.column * 9) + (styles.grid.gutter * 8) + (styles.baseline * 4)
+]
+
 const render = browserWidth => {
-  const calculatedMaxWidth = _.findLast(styles.breakpoints, value => browserWidth > value) // returns undefined if browserWidth is less than the first breakpoint
+  const currentBreakpoint = _.findLast(responsive, value => browserWidth > value)
 
   const numberAndEmail = h('div', {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
   }, [
     h('a', _.assign({}, {href: 'tel:+526161175551'}, !browserWidth ? {} : {
-      style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2}, styles.button)
+      style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2}, styles.button)
     }), '(616) 117-5551'),
     h('a', _.assign({}, {href: 'mailto:contacto@guerrerofitness.mx'}, !browserWidth ? {} : {
-      style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4}, styles.button)
+      style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4}, styles.button)
     }), 'CONTACTO@GUERREROFITNESS.MX')
   ])
 
   const direction = h('div', {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 : styles.baseline * 2 + 3
     }
   }, [
     h('h2', !browserWidth ? {} : {
-      style: browserWidth > styles.breakpoints[1] ? _.assign({}, styles.fonts.desktop.title, {marginTop: -styles.baseline}) : styles.fonts.mobile.title
+      style: browserWidth > responsive[1] ? _.assign({}, styles.fonts.desktop.title, {marginTop: -styles.baseline}) : styles.fonts.mobile.title
     }, 'VEN A VISITARNOS'),
-    h('p', {style: styles.fonts.info}, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')
+    h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')
   ])
-
-  const responsive = [
-    (styles.grid.column * 3) + (styles.grid.gutter * 2) + (styles.baseline * 4),
-    (styles.grid.column * 4) + (styles.grid.gutter * 3) + (styles.baseline * 4),
-    (styles.grid.column * 5) + (styles.grid.gutter * 4) + (styles.baseline * 4),
-    (styles.grid.column * 6) + (styles.grid.gutter * 5) + (styles.baseline * 4),
-    (styles.grid.column * 8) + (styles.grid.gutter * 7) + (styles.baseline * 4),
-    (styles.grid.column * 9) + (styles.grid.gutter * 8) + (styles.baseline * 4)
-  ]
-
-  const currentBreakpoint = _.findLast(responsive, value => browserWidth > value)
-
-  console.log(currentBreakpoint)
 
   const map = h('div#map', {
     style: {
-      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       height: styles.baseline * 14,
-      marginRight: 'auto',
-      marginLeft: 'auto',
       marginBottom: styles.baseline * 4,
       backgroundColor: 'coral'
-    }
-  }, 'djadhakjshdkjash')
+    },
+    hook: elem => {
+      const GoogleMapsLoader = require('google-maps')
 
-  return h('div.wrapper', [
+      GoogleMapsLoader.KEY = 'AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE'
+
+      GoogleMapsLoader.load()
+
+      GoogleMapsLoader.onLoad(google => {
+        console.log(google)
+        const cords = {lat: 30.723390, lng: -115.989136}
+        const map = new google.maps.Map(elem, {center: cords, zoom: 16})
+        new google.maps.Marker({map: map, position: cords})
+      })
+    }
+  })
+
+  return h('div#wrapper', [
+    header(browserWidth),
     numberAndEmail,
     direction,
-    map
+    map,
+    footer(browserWidth)
   ])
 }
 

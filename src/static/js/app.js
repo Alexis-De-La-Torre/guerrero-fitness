@@ -27163,33 +27163,100 @@ domready(function () {
     vdom.patch(domBody, vdom.diff(tree, newTree));
     tree = newTree;
   });
-
-  var GoogleMapsLoader = require('google-maps');
-
-  var uluru = { lat: 30.723390, lng: -115.989136 };
-
-  GoogleMapsLoader.KEY = 'AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE';
-
-  GoogleMapsLoader.load(function (google) {
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: uluru,
-      zoom: 18
-    });
-
-    new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-  });
-
-  GoogleMapsLoader.onLoad(function (google) {
-    console.log('I just loaded google maps api');
-  });
-
-  console.log(require('./styles.js').breakpoints);
 });
 
-},{"./router.js":48,"./styles.js":49,"domready":50,"google-maps":5,"lodash":10,"vdom-virtualize":11,"virtual-dom":16}],43:[function(require,module,exports){
+},{"./router.js":49,"domready":51,"lodash":10,"vdom-virtualize":11,"virtual-dom":16}],43:[function(require,module,exports){
+'use strict';
+
+var h = require('virtual-dom/h');
+var _ = require('lodash');
+
+var styles = require('../styles');
+
+var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
+
+var render = function render(browserWidth) {
+  var currentBreakpoint = _.findLast(responsive, function (value) {
+    return browserWidth > value;
+  });
+
+  var line = h('div.line-separator', {
+    style: {
+      height: 1,
+      background: styles.colors.dark,
+      marginTop: -1,
+      marginBottom: styles.baseline / 2 * 1 - 1
+    }
+  });
+
+  var footer = h('footer', !browserWidth ? {} : { style: _.assign({}, styles.fonts.info, {
+      textAlign: 'right',
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
+      marginRight: 'auto',
+      marginLeft: 'auto'
+    }) }, [h('p', { style: { display: 'inline' } }, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '), h('a', { href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'Alexis De La Torre')]);
+
+  return h('footer', [line, footer]);
+};
+
+module.exports = function (browserWidth) {
+  return render(browserWidth);
+};
+
+},{"../styles":50,"lodash":10,"virtual-dom/h":15}],44:[function(require,module,exports){
+'use strict';
+
+var h = require('virtual-dom/h');
+var _ = require('lodash');
+
+var styles = require('../styles');
+
+var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
+
+var render = function render(browserWidth) {
+  var currentBreakpoint = _.findLast(responsive, function (value) {
+    return browserWidth > value;
+  });
+
+  var topInfo = h('div', !browserWidth ? {} : {
+    style: _.assign({}, styles.fonts.info, {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0],
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: styles.baseline,
+      marginBottom: styles.baseline / 2 * 3 - 6
+    })
+  }, [h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, browserWidth < responsive[0] ? 'Abierto Ahora' : 'Abierto Ahora  ||  '), h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, browserWidth < responsive[0] ? 'Telefono: (616) 117-5551' : 'Telefono: (616) 117-5551  ||  '), h('a', { href: 'facebook.com', style: !browserWidth ? {} : { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, 'facebook.com/guerrerofitness'), h('div', [h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, browserWidth > responsive[2] ? 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00  ||  ' : 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, browserWidth > responsive[2] ? 'Sab 06:00 - 17:00  ||  ' : 'Sab 06:00 - 17:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, 'Dom 07:00 - 14:00')]), h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'block' } }, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
+
+  var line = h('div.line-separator', {
+    style: {
+      height: 1,
+      background: styles.colors.dark,
+      marginTop: -1,
+      marginBottom: styles.baseline / 2 * 5 - 1
+    }
+  });
+
+  var navigation = h('header', !browserWidth ? {} : {
+    style: {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0],
+      display: browserWidth > responsive[2] ? 'flex' : 'block',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4 - styles.fonts.paragraph.paddingTop
+    }
+  }, [h('a', { href: 'index.html', style: !browserWidth ? {} : { marginBottom: browserWidth < responsive[2] ? styles.baseline : 0 } }, h('img', { src: 'img/logo.svg', style: { height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto' } })), h('nav', [h('ul', !browserWidth ? {} : { style: _.assign({}, styles.fonts.paragraph, { display: 'flex', justifyContent: 'space-around' }) }, [h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/' }, 'Inicio')), h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/info' }, 'Informacion')), h('li', h('a', { href: '/contact' }, 'Contacto'))])])]);
+
+  return h('div', [topInfo, line, navigation]);
+};
+
+module.exports = function (browserWidth) {
+  return render(browserWidth);
+};
+
+},{"../styles":50,"lodash":10,"virtual-dom/h":15}],45:[function(require,module,exports){
 'use strict';
 
 var vdom = require('virtual-dom');
@@ -27342,267 +27409,219 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles.js":49,"gsap":6,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],44:[function(require,module,exports){
+},{"../styles.js":50,"gsap":6,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],46:[function(require,module,exports){
 'use strict';
 
-var h = require('virtual-dom/h');
+var vdom = require('virtual-dom');
+var h = require('virtual-hyperscript-hook')(vdom.h);
 var _ = require('lodash');
+
+// Components
+var header = require('../components/header.js');
+var footer = require('../components/footer.js');
 
 var styles = require('../styles.js');
 
+var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
+
 var render = function render(browserWidth) {
-  var calculatedMaxWidth = _.findLast(styles.breakpoints, function (value) {
-    return browserWidth > value;
-  }); // returns undefined if browserWidth is less than the first breakpoint
-
-  var numberAndEmail = h('div', {
-    style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
-    }
-  }, [h('a', _.assign({}, { href: 'tel:+526161175551' }, !browserWidth ? {} : {
-    style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({ width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2 }, styles.button)
-  }), '(616) 117-5551'), h('a', _.assign({}, { href: 'mailto:contacto@guerrerofitness.mx' }, !browserWidth ? {} : {
-    style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : _.assign({ width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4 }, styles.button)
-  }), 'CONTACTO@GUERREROFITNESS.MX')]);
-
-  var direction = h('div', {
-    style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
-    }
-  }, [h('h2', !browserWidth ? {} : {
-    style: browserWidth > styles.breakpoints[1] ? _.assign({}, styles.fonts.desktop.title, { marginTop: -styles.baseline }) : styles.fonts.mobile.title
-  }, 'VEN A VISITARNOS'), h('p', { style: styles.fonts.info }, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
-
-  var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
-
   var currentBreakpoint = _.findLast(responsive, function (value) {
     return browserWidth > value;
   });
 
-  console.log(currentBreakpoint);
+  var numberAndEmail = h('div', {
+    style: {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+    }
+  }, [h('a', _.assign({}, { href: 'tel:+526161175551' }, !browserWidth ? {} : {
+    style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({ width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2 }, styles.button)
+  }), '(616) 117-5551'), h('a', _.assign({}, { href: 'mailto:contacto@guerrerofitness.mx' }, !browserWidth ? {} : {
+    style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({ width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4 }, styles.button)
+  }), 'CONTACTO@GUERREROFITNESS.MX')]);
+
+  var direction = h('div', {
+    style: {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 : styles.baseline * 2 + 3
+    }
+  }, [h('h2', !browserWidth ? {} : {
+    style: browserWidth > responsive[1] ? _.assign({}, styles.fonts.desktop.title, { marginTop: -styles.baseline }) : styles.fonts.mobile.title
+  }, 'VEN A VISITARNOS'), h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
 
   var map = h('div#map', {
     style: {
-      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       height: styles.baseline * 14,
-      marginRight: 'auto',
-      marginLeft: 'auto',
       marginBottom: styles.baseline * 4,
       backgroundColor: 'coral'
-    }
-  }, 'djadhakjshdkjash');
+    },
+    hook: function hook(elem) {
+      var GoogleMapsLoader = require('google-maps');
 
-  return h('div.wrapper', [numberAndEmail, direction, map]);
+      GoogleMapsLoader.KEY = 'AIzaSyCg2JFt1bLv5N-BQeoTyHGxpmJxgYhtdeE';
+
+      GoogleMapsLoader.load();
+
+      GoogleMapsLoader.onLoad(function (google) {
+        console.log(google);
+        var cords = { lat: 30.723390, lng: -115.989136 };
+        var map = new google.maps.Map(elem, { center: cords, zoom: 16 });
+        new google.maps.Marker({ map: map, position: cords });
+      });
+    }
+  });
+
+  return h('div#wrapper', [header(browserWidth), numberAndEmail, direction, map, footer(browserWidth)]);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],45:[function(require,module,exports){
+},{"../components/footer.js":43,"../components/header.js":44,"../styles.js":50,"google-maps":5,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
 var _ = require('lodash');
 
+// Components
+var header = require('../components/header.js');
+var footer = require('../components/footer.js');
+
 var styles = require('../styles.js');
 
+var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
+
 var render = function render(browserWidth) {
-  var calculatedMaxWidth = _.findLast(styles.breakpoints, function (value) {
+  var currentBreakpoint = _.findLast(responsive, function (value) {
     return browserWidth > value;
-  }); // returns undefined if browserWidth is less than the first breakpoint
+  });
 
   var hero = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      display: browserWidth > responsive[2] ? 'flex' : 'block',
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
   }, [h('div', h('img', {
     src: 'img/hero-photo.jpg',
     style: !browserWidth ? {} : {
-      height: browserWidth < styles.breakpoints[4] ? styles.baseline * 10 : styles.baseline * 14,
+      height: browserWidth < responsive[4] ? styles.baseline * 10 : styles.baseline * 14,
       maxHeight: styles.baseline * 14
-    } })), h('h1', !browserWidth ? {} : { style: _.assign({}, browserWidth > styles.breakpoints[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero, browserWidth > styles.breakpoints[2] ? {
+    } })), h('h1', !browserWidth ? {} : { style: _.assign({}, browserWidth > responsive[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero, browserWidth > responsive[2] ? {
       marginLeft: -styles.baseline,
       paddingRight: styles.baseline
     } : {
       marginTop: -(styles.baseline / 2) * 3
     }) }, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')]);
 
-  var testimonials = h('h2', { style: _.assign({}, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+  var testimonials = h('h2', { style: _.assign({}, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 - styles.fonts.desktop.title.paddingTop : styles.baseline * 2 - styles.fonts.mobile.title.paddingTop - 4,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 - styles.fonts.desktop.title.paddingTop : styles.baseline * 2 - styles.fonts.mobile.title.paddingTop - 4
     }) }, 'TESTIMONIOS');
 
   var cta = h('div', !browserWidth ? {} : {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: styles.breakpoints[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: responsive[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop
     }
-  }, [h('p', { style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '#', style: _.assign({}, styles.fonts.link, browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
+  }, [h('p', { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '#', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
 
-  return h('div', [hero, testimonials, require('../components/testimonials-slider.js')(browserWidth), cta]);
+  return h('div#wrapper', [header(browserWidth), hero, testimonials, require('../components/testimonials-slider.js')(browserWidth), cta, footer(browserWidth) // Component
+  ]);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../components/testimonials-slider.js":43,"../styles.js":49,"lodash":10,"virtual-dom/h":15}],46:[function(require,module,exports){
+},{"../components/footer.js":43,"../components/header.js":44,"../components/testimonials-slider.js":45,"../styles.js":50,"lodash":10,"virtual-dom/h":15}],48:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
 var _ = require('lodash');
 
-var styles = require('../styles.js');
-
-var render = function render(page, browserWidth) {
-  var calculatedMaxWidth = _.findLast(styles.breakpoints, function (value) {
-    return browserWidth > value;
-  }); // returns undefined if browserWidth is less than the first breakpoint
-
-  var contactInfo = h('div', !browserWidth ? {} : {
-    style: {
-      display: browserWidth > styles.breakpoints[4] ? 'flex' : 'block',
-      justifyContent: 'space-between',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      marginTop: styles.baseline,
-      marginBottom: styles.baseline / 2 * 3 - 6,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
-    }
-  }, [h('div', { style: styles.fonts.info }, [h('div', [h('p', !browserWidth ? {} : { style: { display: browserWidth < styles.breakpoints[0] ? 'block' : 'inline' } }, browserWidth && browserWidth < styles.breakpoints[0] ? 'Abierto Ahora' : 'Abierto Ahora  ||  '), h('p', !browserWidth ? {} : { style: { display: browserWidth < styles.breakpoints[0] ? 'block' : 'inline' } }, 'Telefono: (616) 117-5551'), h('a', { href: 'facebook.com', style: { display: browserWidth && browserWidth > styles.breakpoints[4] ? 'none' : 'block' } }, 'facebook.com/guerrerofitness') // hide this
-  ]), h('div', [h('p', !browserWidth ? {} : { style: { display: browserWidth > styles.breakpoints[2] ? 'inline' : 'block' } }, browserWidth > styles.breakpoints[2] ? 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00  ||  ' : 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > styles.breakpoints[2] ? 'inline' : 'block' } }, browserWidth > styles.breakpoints[2] ? 'Sab 06:00 - 17:00  ||  ' : 'Sab 06:00 - 17:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > styles.breakpoints[2] ? 'inline' : 'block' } }, 'Dom 07:00 - 14:00'), h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')])]), h('a', { href: 'facebook.com' }, h('img', { src: 'img/facebook-icon.svg', style: { height: styles.baseline * 3, display: browserWidth > styles.breakpoints[4] ? 'block' : 'none' } }))]);
-
-  var header = h('header', !browserWidth ? {} : {
-    style: {
-      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[2] ? styles.baseline * 4 : styles.baseline * 4 - styles.fonts.paragraph.paddingTop,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
-    }
-  }, [h('a', { href: 'index.html', style: !browserWidth ? {} : { marginBottom: browserWidth < styles.breakpoints[2] ? styles.baseline : 0 } }, h('img', { src: 'img/logo.svg', style: { height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto' } })), h('nav', [h('ul', !browserWidth ? {} : { style: _.assign({}, styles.fonts.paragraph, { display: 'flex', justifyContent: 'space-around' }) }, [h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/' }, 'Inicio')), h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/info' }, 'Informacion')), h('li', h('a', { href: '/contact' }, 'Contacto'))])])]);
-
-  var footer = h('footer', !browserWidth ? {} : { style: _.assign({}, styles.fonts.info, {
-      textAlign: 'right',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
-    }) }, [h('p', { style: { display: 'inline' } }, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '), h('a', { href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'Alexis De La Torre')]);
-
-  return h('div#wrapper', [contactInfo, h('div.line-separator', { style: { height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: styles.baseline / 2 * 5 - 1 } }), header, page(browserWidth), h('div.line-separator', { style: { height: 1, background: styles.colors.dark, marginTop: -1, marginBottom: styles.baseline / 2 * 1 - 1 } }), footer]);
-};
-
-module.exports = function (page, browserWidth) {
-  return render(page, browserWidth);
-};
-
-},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],47:[function(require,module,exports){
-'use strict';
-
-var h = require('virtual-dom/h');
-var _ = require('lodash');
+// Components
+var header = require('../components/header.js');
+var footer = require('../components/footer.js');
 
 var styles = require('../styles.js');
+
+var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
 
 var render = function render(browserWidth) {
-  var calculatedMaxWidth = _.findLast(_.take(styles.breakpoints, 4), function (value) {
+  var currentBreakpoint = _.findLast(responsive, function (value) {
     return browserWidth > value;
-  }); // returns undefined if browserWidth is less than the first breakpoint
+  });
 
   var aboutTrainer = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      display: browserWidth > responsive[1] ? 'flex' : 'block',
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 : styles.baseline * 2 + 3
     }
-  }, [h('img', { src: 'img/trainer-photo.jpg', style: { width: styles.baseline * 11, marginRight: browserWidth > styles.breakpoints[2] ? styles.baseline : 0 } }), h('div', [h('h2', !browserWidth ? {} : { style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'ANGEL FERMIN CORTEZ.'), h('p', { style: _.assign({}, styles.fonts.info, { color: styles.colors.accent, marginTop: -styles.baseline / 2, marginBottom: styles.baseline - styles.fonts.info.paddingTop }) }, 'Entrenador Personal  ||  Director General'), h('ul', { style: styles.fonts.paragraph }, [h('li', '— Entrenamiento Femenino'), h('li', '— Biomecanica del ejercicio'), h('li', '— Sistemas actualizados de entrenamiento'), h('li', '— Entrenamiento correctivo'), h('li', '— Entrenamiento en edad adulta'), h('li', '— Biomecanica aplicada al entrenamiento')])])]);
+  }, [h('img', { src: 'img/trainer-photo.jpg', style: { width: styles.baseline * 11, marginRight: browserWidth > responsive[2] ? styles.baseline : 0 } }), h('div', [h('h2', !browserWidth ? {} : { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'ANGEL FERMIN CORTEZ.'), h('p', { style: _.assign({}, styles.fonts.info, { color: styles.colors.accent, marginTop: -styles.baseline / 2, marginBottom: styles.baseline - styles.fonts.info.paddingTop }) }, 'Entrenador Personal  ||  Director General'), h('ul', { style: styles.fonts.paragraph }, [h('li', '— Entrenamiento Femenino'), h('li', '— Biomecanica del ejercicio'), h('li', '— Sistemas actualizados de entrenamiento'), h('li', '— Entrenamiento correctivo'), h('li', '— Entrenamiento en edad adulta'), h('li', '— Biomecanica aplicada al entrenamiento')])])]);
 
   var mission = h('div', !browserWidth ? {} : {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
-  }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', { style: browserWidth > styles.breakpoints[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y POR ESO #SOYGUERRERO')]);
+  }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', { style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y POR ESO #SOYGUERRERO')]);
 
   var video = h('div', {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
-  }, [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: { width: '100%', height: 'auto' } }), h('p', 'Video: Angel Paul Espinoza')]);
+  }, [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: { width: '100%', height: browserWidth / 16 * 9 } }), h('p', { style: _.assign(styles.fonts.info, { marginLeft: styles.baseline }) }, 'Video: Angel Paul Espinoza')]);
 
-  return h('div.wrapper', [aboutTrainer, mission, video]);
+  return h('div#wrapper', [header(browserWidth), aboutTrainer, mission, video, footer(browserWidth)]);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles.js":49,"lodash":10,"virtual-dom/h":15}],48:[function(require,module,exports){
+},{"../components/footer.js":43,"../components/header.js":44,"../styles.js":50,"lodash":10,"virtual-dom/h":15}],49:[function(require,module,exports){
 'use strict';
 
-var indexPage = require('./pages/index.js');
+var home = require('./pages/home.js');
+var info = require('./pages/info.js');
+var contact = require('./pages/contact.js');
 
 module.exports = function (browserWidth) {
   return [{
     route: '/',
-    rendered: indexPage(require('./pages/home.js'), browserWidth)
+    rendered: home(browserWidth)
   }, {
     route: '/info',
-    rendered: indexPage(require('./pages/info.js'), browserWidth)
+    rendered: info(browserWidth)
   }, {
     route: '/contact',
-    rendered: indexPage(require('./pages/contact.js'), browserWidth)
+    rendered: contact(browserWidth)
   }];
 };
 
-},{"./pages/contact.js":44,"./pages/home.js":45,"./pages/index.js":46,"./pages/info.js":47}],49:[function(require,module,exports){
+},{"./pages/contact.js":46,"./pages/home.js":47,"./pages/info.js":48}],50:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
@@ -27611,11 +27630,7 @@ var baseline = 24;
 
 var grid = {
   column: baseline * 4, // 96
-  gutter: baseline, // 24
-  padding: {
-    mobile: baseline, // 24
-    desktop: baseline * 2 // 48
-  }
+  gutter: baseline // 24
 };
 
 var colors = {
@@ -27687,9 +27702,6 @@ var button = _.assign({}, fonts.mobile.title, {
   paddingRight: baseline
 });
 
-var breakpoints = [grid.column * 3 + grid.gutter * 2 + grid.padding.mobile * 2, grid.column * 4 + grid.gutter * 3 + grid.padding.desktop * 2, grid.column * 5 + grid.gutter * 4 + grid.padding.desktop * 2, grid.column * 6 + grid.gutter * 5 + grid.padding.desktop * 2, grid.column * 7 + grid.gutter * 6 + grid.padding.desktop * 2, // 864px
-grid.column * 8 + grid.gutter * 7 + grid.padding.desktop * 2, grid.column * 9 + grid.gutter * 8 + grid.padding.desktop * 2];
-
 // exports
 
 module.exports = {
@@ -27697,11 +27709,10 @@ module.exports = {
   grid: grid,
   fonts: fonts,
   colors: colors,
-  breakpoints: breakpoints,
   button: button
 };
 
-},{"lodash":10}],50:[function(require,module,exports){
+},{"lodash":10}],51:[function(require,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */

@@ -1,26 +1,37 @@
 const h = require('virtual-dom/h')
 const _ = require('lodash')
 
+// Components
+const header = require('../components/header.js')
+const footer = require('../components/footer.js')
+
 const styles = require('../styles.js')
 
+const responsive = [
+  (styles.grid.column * 3) + (styles.grid.gutter * 2) + (styles.baseline * 4),
+  (styles.grid.column * 4) + (styles.grid.gutter * 3) + (styles.baseline * 4),
+  (styles.grid.column * 5) + (styles.grid.gutter * 4) + (styles.baseline * 4),
+  (styles.grid.column * 6) + (styles.grid.gutter * 5) + (styles.baseline * 4),
+  (styles.grid.column * 8) + (styles.grid.gutter * 7) + (styles.baseline * 4),
+  (styles.grid.column * 9) + (styles.grid.gutter * 8) + (styles.baseline * 4)
+]
+
 const render = browserWidth => {
-  const calculatedMaxWidth = _.findLast(_.take(styles.breakpoints, 4), value => browserWidth > value) // returns undefined if browserWidth is less than the first breakpoint
+  const currentBreakpoint = _.findLast(responsive, value => browserWidth > value)
 
   const aboutTrainer = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > styles.breakpoints[2] ? 'flex' : 'block',
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      display: browserWidth > responsive[1] ? 'flex' : 'block',
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 2 : styles.baseline * 2 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 : styles.baseline * 2 + 3
     }
   }, [
-    h('img', {src: 'img/trainer-photo.jpg', style: {width: styles.baseline * 11, marginRight: browserWidth > styles.breakpoints[2] ? styles.baseline : 0}}),
+    h('img', {src: 'img/trainer-photo.jpg', style: {width: styles.baseline * 11, marginRight: browserWidth > responsive[2] ? styles.baseline : 0}}),
     h('div', [
-      h('h2', !browserWidth ? {} : {style: browserWidth > styles.breakpoints[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'ANGEL FERMIN CORTEZ.'),
+      h('h2', !browserWidth ? {} : {style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'ANGEL FERMIN CORTEZ.'),
       h('p', {style: _.assign({}, styles.fonts.info, {color: styles.colors.accent, marginTop: -styles.baseline / 2, marginBottom: styles.baseline - styles.fonts.info.paddingTop})}, 'Entrenador Personal  ||  Director General'),
       h('ul', {style: styles.fonts.paragraph}, [
         h('li', '— Entrenamiento Femenino'),
@@ -35,36 +46,35 @@ const render = browserWidth => {
 
   const mission = h('div', !browserWidth ? {} : {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
+      width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3,
-      paddingRight: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile,
-      paddingLeft: browserWidth > styles.breakpoints[1] ? styles.grid.padding.desktop : styles.grid.padding.mobile
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
   }, [
     h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'),
     h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'),
-    h('h2', {style: browserWidth > styles.breakpoints[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'Y POR ESO #SOYGUERRERO')
+    h('h2', {style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'Y POR ESO #SOYGUERRERO')
   ])
 
   const video = h('div', {
     style: {
-      maxWidth: browserWidth > styles.breakpoints[0] ? calculatedMaxWidth : styles.breakpoints[0],
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > styles.breakpoints[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
     }
   }, [
-    h('iframe', {src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: {width: '100%', height: 'auto'}}),
-    h('p', 'Video: Angel Paul Espinoza')
+    h('iframe', {src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: {width: '100%', height: (browserWidth / 16) * 9}}),
+    h('p', {style: _.assign(styles.fonts.info, {marginLeft: styles.baseline})}, 'Video: Angel Paul Espinoza')
   ])
 
-  return h('div.wrapper', [
+  return h('div#wrapper', [
+    header(browserWidth),
     aboutTrainer,
     mission,
-    video
+    video,
+    footer(browserWidth)
   ])
 }
 

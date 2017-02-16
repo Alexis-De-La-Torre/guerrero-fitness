@@ -1,18 +1,20 @@
-const indexPage = require('./pages/index.js')
+const home = require('./pages/home.js')
+const info = require('./pages/info.js')
+const contact = require('./pages/contact.js')
 
 module.exports = function (browserWidth) {
   return [
     {
       route: '/',
-      rendered: indexPage(require('./pages/home.js'), browserWidth)
+      rendered: home(browserWidth)
     },
     {
       route: '/info',
-      rendered: indexPage(require('./pages/info.js'), browserWidth)
+      rendered: info(browserWidth)
     },
     {
       route: '/contact',
-      rendered: indexPage(require('./pages/contact.js'), browserWidth)
+      rendered: contact(browserWidth)
     }
   ]
 }

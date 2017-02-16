@@ -10,8 +10,6 @@ const buffer = require('vinyl-buffer')
 const livereload = require('gulp-livereload')
 const _ = require('lodash')
 
-console.log(babelify)
-
 const spawn = require('child_process').spawn
 let node
 

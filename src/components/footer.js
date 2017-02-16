@@ -28,7 +28,8 @@ const render = browserWidth => {
     textAlign: 'right',
     width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
     marginRight: 'auto',
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    marginBottom: styles.baseline / 2
   })}, [
     h('p', {style: {display: 'inline'}}, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '),
     h('a', {href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, {display: 'inline'})}, 'Alexis De La Torre')

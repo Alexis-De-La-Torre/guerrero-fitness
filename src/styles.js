@@ -19,14 +19,12 @@ const fonts = {
     fontFamily: 'Cooper Hewitt',
     fontSize: 16,
     fontWeight: 300,
-    lineHeight: baseline + 'px',
-    paddingTop: 7 // baseline fix
+    lineHeight: baseline + 'px'
   },
   info: {
     fontFamily: 'Roboto Mono',
     fontSize: 12,
-    lineHeight: baseline + 'px',
-    paddingTop: 7 // baseline fix
+    lineHeight: baseline + 'px'
   },
   link: {
     color: colors.accent,
@@ -37,15 +35,13 @@ const fonts = {
       fontFamily: 'Cooper Hewitt',
       fontSize: 24,
       fontWeight: 700,
-      lineHeight: baseline + 'px',
-      paddingTop: 12 // baseline fix
+      lineHeight: baseline + 'px'
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 42,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px',
-      paddingTop: 9 // baseline fix
+      lineHeight: baseline * 2 + 'px'
     }
   },
   desktop: {
@@ -53,15 +49,13 @@ const fonts = {
       fontFamily: 'Cooper Hewitt',
       fontSize: 32,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px',
-      paddingTop: 12 // baseline fix
+      lineHeight: baseline * 2 + 'px'
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 64,
       fontWeight: 700,
       lineHeight: baseline * 3 + 'px'
-      // paddingTop: 12 // baseline fix
     }
   }
 }
@@ -70,10 +64,7 @@ const button = _.assign({}, fonts.mobile.title, {
   fontSize: 16,
   color: colors.complement,
   backgroundColor: colors.accent,
-  paddingTop: (baseline / 2) + fonts.mobile.title.paddingTop,
-  paddingBottom: (baseline / 2) + fonts.mobile.title.paddingTop,
-  paddingLeft: baseline,
-  paddingRight: baseline
+  padding: baseline
 })
 
 // exports

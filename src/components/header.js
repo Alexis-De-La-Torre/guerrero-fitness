@@ -21,7 +21,7 @@ const render = browserWidth => {
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: ((styles.baseline / 2) * 3) - 6
+      marginBottom: (styles.baseline / 2) * 3
     })
   }, [
     h('p', !browserWidth ? {} : {style: {display: browserWidth < responsive[0] ? 'block' : 'inline'}}, browserWidth < responsive[0] ? 'Abierto Ahora' : 'Abierto Ahora  ||  '),
@@ -52,7 +52,7 @@ const render = browserWidth => {
       alignItems: 'center',
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[2] ? (styles.baseline * 4) : (styles.baseline * 4) - styles.fonts.paragraph.paddingTop
+      marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4
     }
   }, [
     h('a', {href: 'index.html', style: !browserWidth ? {} : {marginBottom: browserWidth < responsive[2] ? styles.baseline : 0}}, h('img', {src: 'img/logo.svg', style: {height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto'}})),

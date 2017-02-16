@@ -119,8 +119,7 @@ const render = browserWidth => {
       width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginTop: styles.baseline * 4,
-      marginBottom: (styles.baseline * 4) - 2
+      marginBottom: (styles.baseline * 4)
     }
   }, [
     h('button', {

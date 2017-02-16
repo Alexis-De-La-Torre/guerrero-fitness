@@ -26,7 +26,7 @@ const render = browserWidth => {
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [
     h('div', h('img', {
@@ -47,7 +47,7 @@ const render = browserWidth => {
     width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginBottom: browserWidth > responsive[4] ? (styles.baseline * 2) - styles.fonts.desktop.title.paddingTop : (styles.baseline * 2) - styles.fonts.mobile.title.paddingTop - 4
+    marginBottom: (styles.baseline * 4) + 1 // i have no idea why this doesnt align
   })},
   'TESTIMONIOS')
 
@@ -56,7 +56,7 @@ const render = browserWidth => {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: responsive[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop
+      marginBottom: styles.baseline * 4
     }
   }, [
     h('p', {style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),

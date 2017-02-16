@@ -17,6 +17,20 @@ const responsive = [
   (styles.grid.column * 9) + (styles.grid.gutter * 8) + (styles.baseline * 4)
 ]
 
+const fonts = {
+  info: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 12,
+    lineHeight: styles.baseline + 'px'
+  },
+  title: {
+    fontFamily: 'Cooper Hewitt',
+    fontSize: 32,
+    fontWeight: 700,
+    lineHeight: styles.baseline * 2 + 'px'
+  }
+}
+
 const render = browserWidth => {
   const currentBreakpoint = _.findLast(responsive, value => browserWidth > value)
 
@@ -25,14 +39,14 @@ const render = browserWidth => {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [
     h('a', _.assign({}, {href: 'tel:+526161175551'}, !browserWidth ? {} : {
-      style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2}, styles.button)
+      style: browserWidth > responsive[3] ? _.assign({}, fonts.title, {marginBottom: styles.baseline}) : _.assign({}, {width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2}, styles.button)
     }), '(616) 117-5551'),
     h('a', _.assign({}, {href: 'mailto:contacto@guerrerofitness.mx'}, !browserWidth ? {} : {
-      style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4}, styles.button)
+      style: browserWidth > responsive[3] ? fonts.title : _.assign({}, {width: 270, marginRight: 'auto', marginLeft: 'auto'}, styles.button)
     }), 'CONTACTO@GUERREROFITNESS.MX')
   ])
 
@@ -46,8 +60,8 @@ const render = browserWidth => {
   }, [
     h('h2', !browserWidth ? {} : {
       style: browserWidth > responsive[1] ? _.assign({}, styles.fonts.desktop.title, {marginTop: -styles.baseline}) : styles.fonts.mobile.title
-    }, 'VEN A VISITARNOS'),
-    h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')
+    }, 'O VEN A VISITARNOS'),
+    h('p', {style: fonts.info}, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')
   ])
 
   const map = h('div#map', {

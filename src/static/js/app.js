@@ -27193,7 +27193,8 @@ var render = function render(browserWidth) {
       textAlign: 'right',
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
-      marginLeft: 'auto'
+      marginLeft: 'auto',
+      marginBottom: styles.baseline / 2
     }) }, [h('p', { style: { display: 'inline' } }, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '), h('a', { href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'Alexis De La Torre')]);
 
   return h('footer', [line, footer]);
@@ -27224,7 +27225,7 @@ var render = function render(browserWidth) {
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: styles.baseline / 2 * 3 - 6
+      marginBottom: styles.baseline / 2 * 3
     })
   }, [h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, browserWidth < responsive[0] ? 'Abierto Ahora' : 'Abierto Ahora  ||  '), h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, browserWidth < responsive[0] ? 'Telefono: (616) 117-5551' : 'Telefono: (616) 117-5551  ||  '), h('a', { href: 'facebook.com', style: !browserWidth ? {} : { display: browserWidth < responsive[0] ? 'block' : 'inline' } }, 'facebook.com/guerrerofitness'), h('div', [h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, browserWidth > responsive[2] ? 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00  ||  ' : 'Lun-Vie 05:00 - 11:00 & 15:00 - 22:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, browserWidth > responsive[2] ? 'Sab 06:00 - 17:00  ||  ' : 'Sab 06:00 - 17:00'), h('p', !browserWidth ? {} : { style: { display: browserWidth > responsive[2] ? 'inline' : 'block' } }, 'Dom 07:00 - 14:00')]), h('p', !browserWidth ? {} : { style: { display: browserWidth < responsive[0] ? 'block' : 'block' } }, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
 
@@ -27245,7 +27246,7 @@ var render = function render(browserWidth) {
       alignItems: 'center',
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4 - styles.fonts.paragraph.paddingTop
+      marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4
     }
   }, [h('a', { href: 'index.html', style: !browserWidth ? {} : { marginBottom: browserWidth < responsive[2] ? styles.baseline : 0 } }, h('img', { src: 'img/logo.svg', style: { height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto' } })), h('nav', [h('ul', !browserWidth ? {} : { style: _.assign({}, styles.fonts.paragraph, { display: 'flex', justifyContent: 'space-around' }) }, [h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/' }, 'Inicio')), h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/info' }, 'Informacion')), h('li', h('a', { href: '/contact' }, 'Contacto'))])])]);
 
@@ -27373,8 +27374,7 @@ var render = function render(browserWidth) {
       width: currentBreakpoint !== undefined ? currentBreakpoint.containerWidth : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginTop: styles.baseline * 4,
-      marginBottom: styles.baseline * 4 - 2
+      marginBottom: styles.baseline * 4
     }
   }, [h('button', {
     style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: 'blue' },
@@ -27424,6 +27424,20 @@ var styles = require('../styles.js');
 
 var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
 
+var fonts = {
+  info: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 12,
+    lineHeight: styles.baseline + 'px'
+  },
+  title: {
+    fontFamily: 'Cooper Hewitt',
+    fontSize: 32,
+    fontWeight: 700,
+    lineHeight: styles.baseline * 2 + 'px'
+  }
+};
+
 var render = function render(browserWidth) {
   var currentBreakpoint = _.findLast(responsive, function (value) {
     return browserWidth > value;
@@ -27434,12 +27448,12 @@ var render = function render(browserWidth) {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [h('a', _.assign({}, { href: 'tel:+526161175551' }, !browserWidth ? {} : {
-    style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({ width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2 }, styles.button)
+    style: browserWidth > responsive[3] ? _.assign({}, fonts.title, { marginBottom: styles.baseline }) : _.assign({}, { width: 120, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 2 }, styles.button)
   }), '(616) 117-5551'), h('a', _.assign({}, { href: 'mailto:contacto@guerrerofitness.mx' }, !browserWidth ? {} : {
-    style: browserWidth > responsive[3] ? styles.fonts.desktop.title : _.assign({ width: 270, marginRight: 'auto', marginLeft: 'auto', marginBottom: styles.baseline * 4 }, styles.button)
+    style: browserWidth > responsive[3] ? fonts.title : _.assign({}, { width: 270, marginRight: 'auto', marginLeft: 'auto' }, styles.button)
   }), 'CONTACTO@GUERREROFITNESS.MX')]);
 
   var direction = h('div', {
@@ -27451,7 +27465,7 @@ var render = function render(browserWidth) {
     }
   }, [h('h2', !browserWidth ? {} : {
     style: browserWidth > responsive[1] ? _.assign({}, styles.fonts.desktop.title, { marginTop: -styles.baseline }) : styles.fonts.mobile.title
-  }, 'VEN A VISITARNOS'), h('p', 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
+  }, 'O VEN A VISITARNOS'), h('p', { style: fonts.info }, 'Plaza Magnolia local 2-A, Colonia Vicente Guerrero, Baja California, Mexico')]);
 
   var map = h('div#map', {
     style: {
@@ -27508,7 +27522,7 @@ var render = function render(browserWidth) {
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [h('div', h('img', {
     src: 'img/hero-photo.jpg',
@@ -27526,7 +27540,7 @@ var render = function render(browserWidth) {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 - styles.fonts.desktop.title.paddingTop : styles.baseline * 2 - styles.fonts.mobile.title.paddingTop - 4
+      marginBottom: styles.baseline * 4 + 1 // i have no idea why this doesnt align
     }) }, 'TESTIMONIOS');
 
   var cta = h('div', !browserWidth ? {} : {
@@ -27534,7 +27548,7 @@ var render = function render(browserWidth) {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: responsive[3] ? styles.baseline * 4 - styles.fonts.desktop.title.paddingTop : styles.baseline * 4 - styles.fonts.mobile.title.paddingTop
+      marginBottom: styles.baseline * 4
     }
   }, [h('p', { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '#', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
 
@@ -27560,6 +27574,28 @@ var styles = require('../styles.js');
 
 var responsive = [styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4];
 
+var fonts = {
+  info: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 12,
+    lineHeight: styles.baseline + 'px'
+  },
+  title: {
+    desktop: {
+      fontFamily: 'Cooper Hewitt',
+      fontSize: 32,
+      fontWeight: 700,
+      lineHeight: styles.baseline + 'px'
+    },
+    mobile: {
+      fontFamily: 'Cooper Hewitt',
+      fontSize: 24,
+      fontWeight: 700,
+      lineHeight: styles.baseline * 2 + 'px'
+    }
+  }
+};
+
 var render = function render(browserWidth) {
   var currentBreakpoint = _.findLast(responsive, function (value) {
     return browserWidth > value;
@@ -27567,14 +27603,14 @@ var render = function render(browserWidth) {
 
   var aboutTrainer = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > responsive[1] ? 'flex' : 'block',
+      display: browserWidth > responsive[2] ? 'flex' : 'block',
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 2 : styles.baseline * 2 + 3
+      marginBottom: styles.baseline * 2
     }
-  }, [h('img', { src: 'img/trainer-photo.jpg', style: { width: styles.baseline * 11, marginRight: browserWidth > responsive[2] ? styles.baseline : 0 } }), h('div', [h('h2', !browserWidth ? {} : { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'ANGEL FERMIN CORTEZ.'), h('p', { style: _.assign({}, styles.fonts.info, { color: styles.colors.accent, marginTop: -styles.baseline / 2, marginBottom: styles.baseline - styles.fonts.info.paddingTop }) }, 'Entrenador Personal  ||  Director General'), h('ul', { style: styles.fonts.paragraph }, [h('li', '— Entrenamiento Femenino'), h('li', '— Biomecanica del ejercicio'), h('li', '— Sistemas actualizados de entrenamiento'), h('li', '— Entrenamiento correctivo'), h('li', '— Entrenamiento en edad adulta'), h('li', '— Biomecanica aplicada al entrenamiento')])])]);
+  }, [h('img', { src: 'img/trainer-photo.jpg', style: { width: styles.baseline * 11, marginRight: browserWidth > responsive[2] ? styles.baseline : 0 } }), h('div', [h('h2', !browserWidth ? {} : { style: browserWidth > responsive[3] ? fonts.title.desktop : fonts.title.mobile }, 'ANGEL FERMIN CORTEZ.'), h('p', { style: _.assign({}, fonts.info, { color: styles.colors.accent, marginBottom: styles.baseline }) }, 'Entrenador Personal  ||  Director General'), h('ul', { style: styles.fonts.paragraph }, [h('li', '— Entrenamiento Femenino'), h('li', '— Biomecanica del ejercicio'), h('li', '— Sistemas actualizados de entrenamiento'), h('li', '— Entrenamiento correctivo'), h('li', '— Entrenamiento en edad adulta'), h('li', '— Biomecanica aplicada al entrenamiento')])])]);
 
   var mission = h('div', !browserWidth ? {} : {
     style: {
@@ -27582,7 +27618,7 @@ var render = function render(browserWidth) {
       marginRight: 'auto',
       marginLeft: 'auto',
       marginTop: styles.baseline,
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', { style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y POR ESO #SOYGUERRERO')]);
 
@@ -27590,7 +27626,7 @@ var render = function render(browserWidth) {
     style: {
       marginRight: 'auto',
       marginLeft: 'auto',
-      marginBottom: browserWidth > responsive[4] ? styles.baseline * 4 : styles.baseline * 4 + 3
+      marginBottom: styles.baseline * 4
     }
   }, [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: { width: '100%', height: browserWidth / 16 * 9 } }), h('p', { style: _.assign(styles.fonts.info, { marginLeft: styles.baseline }) }, 'Video: Angel Paul Espinoza')]);
 
@@ -27645,14 +27681,12 @@ var fonts = {
     fontFamily: 'Cooper Hewitt',
     fontSize: 16,
     fontWeight: 300,
-    lineHeight: baseline + 'px',
-    paddingTop: 7 // baseline fix
+    lineHeight: baseline + 'px'
   },
   info: {
     fontFamily: 'Roboto Mono',
     fontSize: 12,
-    lineHeight: baseline + 'px',
-    paddingTop: 7 // baseline fix
+    lineHeight: baseline + 'px'
   },
   link: {
     color: colors.accent,
@@ -27663,15 +27697,13 @@ var fonts = {
       fontFamily: 'Cooper Hewitt',
       fontSize: 24,
       fontWeight: 700,
-      lineHeight: baseline + 'px',
-      paddingTop: 12 // baseline fix
+      lineHeight: baseline + 'px'
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 42,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px',
-      paddingTop: 9 // baseline fix
+      lineHeight: baseline * 2 + 'px'
     }
   },
   desktop: {
@@ -27679,15 +27711,13 @@ var fonts = {
       fontFamily: 'Cooper Hewitt',
       fontSize: 32,
       fontWeight: 700,
-      lineHeight: baseline * 2 + 'px',
-      paddingTop: 12 // baseline fix
+      lineHeight: baseline * 2 + 'px'
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
       fontSize: 64,
       fontWeight: 700,
       lineHeight: baseline * 3 + 'px'
-      // paddingTop: 12 // baseline fix
     }
   }
 };
@@ -27696,10 +27726,7 @@ var button = _.assign({}, fonts.mobile.title, {
   fontSize: 16,
   color: colors.complement,
   backgroundColor: colors.accent,
-  paddingTop: baseline / 2 + fonts.mobile.title.paddingTop,
-  paddingBottom: baseline / 2 + fonts.mobile.title.paddingTop,
-  paddingLeft: baseline,
-  paddingRight: baseline
+  padding: baseline
 });
 
 // exports

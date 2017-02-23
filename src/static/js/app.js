@@ -27305,17 +27305,13 @@ var testimonialsData = [{
   text: 'Excelente atención personalizada instructor preparado para asignar rutinas y plan de nutrición',
   name: 'Carlos Fernando Fragozo'
 }, {
-  portrait: 'img/portrait1.jpg',
-  text: 'Exelente atencion, sin duda el mejor gimnasio de Vicente Guerrero, muy agradable ambiente y atencion por parte de los instructores.',
-  name: 'Angel Paul Espinoza.'
+  portrait: 'img/portrait4.jpg',
+  text: 'muy buen instructor.. atento y agradable.. rutinas muuy buenas.. y un ambiente excelente!!',
+  name: 'Edith Rabago'
 }, {
-  portrait: 'img/portrait2.jpg',
-  text: 'Excelente ambiente, el entrenador muy atento con los usuarios, super recomendado',
-  name: 'Delia Lizbeth Castro'
-}, {
-  portrait: 'img/portrait3.jpg',
-  text: 'Excelente atención personalizada instructor preparado para asignar rutinas y plan de nutrición',
-  name: 'Carlos Fernando Fragozo'
+  portrait: 'img/portrait5.jpg',
+  text: 'La verdad kiero recomdarlo buena atención cómodo buen ambiente y aparatos y el entrenador ni ce diga buena onda',
+  name: 'Raul Yañez Salgado'
 }];
 
 var responsive = [{ containerWidth: styles.grid.column * 3 + styles.grid.gutter * 2 + styles.baseline * 4, testimonialWidth: styles.grid.column * 3 + styles.grid.gutter * 2, columns: 1 }, { containerWidth: styles.grid.column * 4 + styles.grid.gutter * 3 + styles.baseline * 4, testimonialWidth: styles.grid.column * 4 + styles.grid.gutter * 3, columns: 1 }, { containerWidth: styles.grid.column * 5 + styles.grid.gutter * 4 + styles.baseline * 4, testimonialWidth: styles.grid.column * 5 + styles.grid.gutter * 4, columns: 1 }, { containerWidth: styles.grid.column * 6 + styles.grid.gutter * 5 + styles.baseline * 4, testimonialWidth: styles.grid.column * 3 + styles.grid.gutter * 2, columns: 2 }, { containerWidth: styles.grid.column * 8 + styles.grid.gutter * 7 + styles.baseline * 4, testimonialWidth: styles.grid.column * 4 + styles.grid.gutter * 3, columns: 2 }, { containerWidth: styles.grid.column * 9 + styles.grid.gutter * 8 + styles.baseline * 4, testimonialWidth: styles.grid.column * 3 + styles.grid.gutter * 2, columns: 3 }];

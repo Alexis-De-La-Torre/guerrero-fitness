@@ -22,19 +22,14 @@ const testimonialsData = [
     name: 'Carlos Fernando Fragozo'
   },
   {
-    portrait: 'img/portrait1.jpg',
-    text: 'Exelente atencion, sin duda el mejor gimnasio de Vicente Guerrero, muy agradable ambiente y atencion por parte de los instructores.',
-    name: 'Angel Paul Espinoza.'
+    portrait: 'img/portrait4.jpg',
+    text: 'muy buen instructor.. atento y agradable.. rutinas muuy buenas.. y un ambiente excelente!!',
+    name: 'Edith Rabago'
   },
   {
-    portrait: 'img/portrait2.jpg',
-    text: 'Excelente ambiente, el entrenador muy atento con los usuarios, super recomendado',
-    name: 'Delia Lizbeth Castro'
-  },
-  {
-    portrait: 'img/portrait3.jpg',
-    text: 'Excelente atención personalizada instructor preparado para asignar rutinas y plan de nutrición',
-    name: 'Carlos Fernando Fragozo'
+    portrait: 'img/portrait5.jpg',
+    text: 'La verdad kiero recomdarlo buena atención cómodo buen ambiente y aparatos y el entrenador ni ce diga buena onda',
+    name: 'Raul Yañez Salgado'
   }
 ]
 

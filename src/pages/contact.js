@@ -68,7 +68,7 @@ const render = browserWidth => {
     style: {
       height: styles.baseline * 14,
       marginBottom: styles.baseline * 4,
-      backgroundColor: 'coral'
+      backgroundColor: styles.colors.complement
     },
     hook: elem => {
       const GoogleMapsLoader = require('google-maps')

@@ -1,4 +1,5 @@
-const h = require('virtual-dom/h')
+const h = require('virtual-hyperscript-hook')(require('virtual-dom/h'))
+const mount = require('virtual-hyperscript-mount')()
 const _ = require('lodash')
 
 // Components
@@ -21,7 +22,7 @@ const render = browserWidth => {
 
   const hero = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > responsive[2] ? 'flex' : 'block',
+      display: browserWidth > responsive[3] ? 'flex' : 'block',
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
@@ -35,12 +36,10 @@ const render = browserWidth => {
         height: browserWidth < responsive[4] ? styles.baseline * 10 : styles.baseline * 14,
         maxHeight: styles.baseline * 14
       }})),
-    h('h1', !browserWidth ? {} : {style: _.assign({}, browserWidth > responsive[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero, browserWidth > responsive[2] ? {
-      marginLeft: -styles.baseline,
-      paddingRight: styles.baseline
-    } : {
-      marginTop: -(styles.baseline / 2) * 3
-    })}, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')
+      h('div', !browserWidth ? {} : {style: browserWidth > responsive[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero}, [
+        h('h1', {style: {display: 'inline'}}, 'En Guerrero Fitness te aconsejamos y ayudamos a descubrir tu rutina perfecta. Solo '),
+        h('a', {href: '/contact', style: _.assign({}, styles.fonts.link, {display: 'inline'})}, 'llámanos o visitanos.')
+      ])
   ])
 
   const testimonials = h('h2', {style: _.assign({}, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
@@ -60,7 +59,7 @@ const render = browserWidth => {
     }
   }, [
     h('p', {style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'),
-    h('a', {href: '#', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title)}, 'DESCUBRE MAS')
+    h('a', {href: '/info', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title)}, 'DESCUBRE MAS')
   ])
 
   return h('div#wrapper', [

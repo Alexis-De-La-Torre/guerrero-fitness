@@ -35,7 +35,7 @@ const render = browserWidth => {
     h('a', {href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, {display: 'inline'})}, 'Alexis De La Torre')
   ])
 
-  return h('footer', [line, footer])
+  return h('footer', browserWidth ? [line, footer] : footer)
 }
 
 module.exports = browserWidth => render(browserWidth)

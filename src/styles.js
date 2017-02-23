@@ -53,7 +53,7 @@ const fonts = {
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
-      fontSize: 64,
+      fontSize: 54,
       fontWeight: 700,
       lineHeight: baseline * 3 + 'px'
     }

@@ -55,7 +55,7 @@ const render = browserWidth => {
       marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4
     }
   }, [
-    h('a', {href: 'index.html', style: !browserWidth ? {} : {marginBottom: browserWidth < responsive[2] ? styles.baseline : 0}}, h('img', {src: 'img/logo.svg', style: {height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto'}})),
+    h('a', {href: '/', style: !browserWidth ? {} : {marginBottom: browserWidth < responsive[2] ? styles.baseline : 0}}, h('img', {src: 'img/logo.svg', style: {height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto'}})),
     h('nav', [
       h('ul', !browserWidth ? {} : {style: _.assign({}, styles.fonts.paragraph, {display: 'flex', justifyContent: 'space-around'})}, [
         h('li', {style: {marginRight: styles.baseline * 2}}, h('a', {href: '/'}, 'Inicio')),
@@ -65,9 +65,12 @@ const render = browserWidth => {
     ])
   ])
 
-  return h('div', [
+  return h('div', browserWidth ? [
     topInfo,
     line,
+    navigation
+  ] : [
+    topInfo,
     navigation
   ])
 }

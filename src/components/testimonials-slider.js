@@ -79,7 +79,7 @@ const render = browserWidth => {
       h('img', {src: portrait, style: {borderRadius: '50%', marginRight: 'auto', marginLeft: 'auto'}}),
       h('img', {src: 'img/stars.svg', style: {height: styles.baseline, marginRight: 'auto', marginLeft: 'auto', marginTop: -styles.baseline}}),
       h('p', {style: styles.fonts.paragraph}, text),
-      h('p', {style: styles.fonts.info}, name)
+      h('p', {style: _.assign({}, styles.fonts.info)}, name)
     ])
   }
 
@@ -89,7 +89,7 @@ const render = browserWidth => {
       _.each(testimonialNodes, testimonialNode => {
         TweenLite.to(testimonialNode, 0.5, {
           x: '+=' + (currentBreakpoint.testimonialWidth + styles.baseline),
-          ease: Bounce.easeOut,
+          ease: Back.easeOut,
           onStart: () => { isTransitioning = true },
           onComplete: () => { isTransitioning = false }
         })
@@ -104,7 +104,7 @@ const render = browserWidth => {
       _.each(testimonialNodes, testimonialNode => {
         TweenLite.to(testimonialNode, 0.5, {
           x: '-=' + (currentBreakpoint.testimonialWidth + styles.baseline),
-          ease: Bounce.easeOut,
+          ease: Back.easeOut,
           onStart: () => { isTransitioning = true },
           onComplete: () => { isTransitioning = false }
         })
@@ -123,7 +123,7 @@ const render = browserWidth => {
     }
   }, [
     h('button', {
-      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: 'blue'},
+      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: styles.colors.accent},
       hook: elem => {
         if (hookedCount < 2) {
           elem.addEventListener('click', moveRigth)
@@ -141,7 +141,7 @@ const render = browserWidth => {
       }
     }, _.map(testimonialsData, testimonial => renderTestimonial(testimonial.portrait, testimonial.text, testimonial.name))),
     h('button', {
-      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginLeft: 12, color: 'white', backgroundColor: 'blue'},
+      style: {width: styles.baseline, flexGrow: 0, flexShrink: 0, marginLeft: 12, color: 'white', backgroundColor: styles.colors.accent},
       hook: elem => {
         if (hookedCount < 2) {
           elem.addEventListener('click', moveLeft)

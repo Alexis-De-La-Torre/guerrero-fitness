@@ -26140,7 +26140,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./create-element":19,"./dom-index":20,"./patch-op":21,"global/document":4,"x-is-array":41}],23:[function(require,module,exports){
+},{"./create-element":19,"./dom-index":20,"./patch-op":21,"global/document":4,"x-is-array":42}],23:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -26344,7 +26344,7 @@ function errorString(obj) {
     }
 }
 
-},{"../vnode/is-thunk":29,"../vnode/is-vhook":30,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vnode.js":35,"../vnode/vtext.js":37,"./hooks/ev-hook.js":24,"./hooks/soft-set-hook.js":25,"./parse-tag.js":27,"x-is-array":41}],27:[function(require,module,exports){
+},{"../vnode/is-thunk":29,"../vnode/is-vhook":30,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vnode.js":35,"../vnode/vtext.js":37,"./hooks/ev-hook.js":24,"./hooks/soft-set-hook.js":25,"./parse-tag.js":27,"x-is-array":42}],27:[function(require,module,exports){
 'use strict';
 
 var split = require('browser-split');
@@ -27085,7 +27085,7 @@ function appendPatch(apply, patch) {
     }
 }
 
-},{"../vnode/handle-thunk":28,"../vnode/is-thunk":29,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vpatch":36,"./diff-props":38,"x-is-array":41}],40:[function(require,module,exports){
+},{"../vnode/handle-thunk":28,"../vnode/is-thunk":29,"../vnode/is-vnode":31,"../vnode/is-vtext":32,"../vnode/is-widget":33,"../vnode/vpatch":36,"./diff-props":38,"x-is-array":42}],40:[function(require,module,exports){
 var isArray = require('x-is-array');
 
 module.exports = function (h, opts) {
@@ -27127,7 +27127,32 @@ function isChildren(x) {
 
 function isfn (x) { return typeof x === 'function' }
 
-},{"x-is-array":41}],41:[function(require,module,exports){
+},{"x-is-array":42}],41:[function(require,module,exports){
+module.exports = function () {
+  if (typeof Set !== 'undefined') {
+    var elems = new Set
+    return function (fn) {
+      return function (elem) {
+        if (!elems.has(elem)) {
+          elems.add(elem)
+          fn(elem)
+        }
+      }
+    }
+  } else {
+    var elems = []
+    return function (fn) {
+      return function (elem) {
+        if (elems.indexOf(elem) < 0) {
+          elems.push(elem)
+          fn(elem)
+        }
+      }
+    }
+  }
+}
+
+},{}],42:[function(require,module,exports){
 var nativeIsArray = Array.isArray
 var toString = Object.prototype.toString
 
@@ -27137,7 +27162,7 @@ function isArray(obj) {
     return toString.call(obj) === "[object Array]"
 }
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 var domready = require('domready');
@@ -27165,7 +27190,7 @@ domready(function () {
   });
 });
 
-},{"./router.js":49,"domready":51,"lodash":10,"vdom-virtualize":11,"virtual-dom":16}],43:[function(require,module,exports){
+},{"./router.js":50,"domready":52,"lodash":10,"vdom-virtualize":11,"virtual-dom":16}],44:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -27197,14 +27222,14 @@ var render = function render(browserWidth) {
       marginBottom: styles.baseline / 2
     }) }, [h('p', { style: { display: 'inline' } }, 'Diseno de marca, Pagina Web y Administracion de Redes Sociales: '), h('a', { href: 'facebook.com/alexisdelatorre', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'Alexis De La Torre')]);
 
-  return h('footer', [line, footer]);
+  return h('footer', browserWidth ? [line, footer] : footer);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles":50,"lodash":10,"virtual-dom/h":15}],44:[function(require,module,exports){
+},{"../styles":51,"lodash":10,"virtual-dom/h":15}],45:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -27248,16 +27273,16 @@ var render = function render(browserWidth) {
       marginLeft: 'auto',
       marginBottom: browserWidth > responsive[2] ? styles.baseline * 4 : styles.baseline * 4
     }
-  }, [h('a', { href: 'index.html', style: !browserWidth ? {} : { marginBottom: browserWidth < responsive[2] ? styles.baseline : 0 } }, h('img', { src: 'img/logo.svg', style: { height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto' } })), h('nav', [h('ul', !browserWidth ? {} : { style: _.assign({}, styles.fonts.paragraph, { display: 'flex', justifyContent: 'space-around' }) }, [h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/' }, 'Inicio')), h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/info' }, 'Informacion')), h('li', h('a', { href: '/contact' }, 'Contacto'))])])]);
+  }, [h('a', { href: '/', style: !browserWidth ? {} : { marginBottom: browserWidth < responsive[2] ? styles.baseline : 0 } }, h('img', { src: 'img/logo.svg', style: { height: styles.baseline * 4, marginRight: 'auto', marginLeft: 'auto' } })), h('nav', [h('ul', !browserWidth ? {} : { style: _.assign({}, styles.fonts.paragraph, { display: 'flex', justifyContent: 'space-around' }) }, [h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/' }, 'Inicio')), h('li', { style: { marginRight: styles.baseline * 2 } }, h('a', { href: '/info' }, 'Informacion')), h('li', h('a', { href: '/contact' }, 'Contacto'))])])]);
 
-  return h('div', [topInfo, line, navigation]);
+  return h('div', browserWidth ? [topInfo, line, navigation] : [topInfo, navigation]);
 };
 
 module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles":50,"lodash":10,"virtual-dom/h":15}],45:[function(require,module,exports){
+},{"../styles":51,"lodash":10,"virtual-dom/h":15}],46:[function(require,module,exports){
 'use strict';
 
 var vdom = require('virtual-dom');
@@ -27327,7 +27352,7 @@ var render = function render(browserWidth) {
       hook: function hook(elem) {
         if (testimonialNodes.length < testimonialsData.length) testimonialNodes.push(elem);
       }
-    }, [h('img', { src: portrait, style: { borderRadius: '50%', marginRight: 'auto', marginLeft: 'auto' } }), h('img', { src: 'img/stars.svg', style: { height: styles.baseline, marginRight: 'auto', marginLeft: 'auto', marginTop: -styles.baseline } }), h('p', { style: styles.fonts.paragraph }, text), h('p', { style: styles.fonts.info }, name)]);
+    }, [h('img', { src: portrait, style: { borderRadius: '50%', marginRight: 'auto', marginLeft: 'auto' } }), h('img', { src: 'img/stars.svg', style: { height: styles.baseline, marginRight: 'auto', marginLeft: 'auto', marginTop: -styles.baseline } }), h('p', { style: styles.fonts.paragraph }, text), h('p', { style: _.assign({}, styles.fonts.info) }, name)]);
   };
 
   var moveRigth = function moveRigth() {
@@ -27336,7 +27361,7 @@ var render = function render(browserWidth) {
       _.each(testimonialNodes, function (testimonialNode) {
         TweenLite.to(testimonialNode, 0.5, {
           x: '+=' + (currentBreakpoint.testimonialWidth + styles.baseline),
-          ease: Bounce.easeOut,
+          ease: Back.easeOut,
           onStart: function onStart() {
             isTransitioning = true;
           },
@@ -27355,7 +27380,7 @@ var render = function render(browserWidth) {
       _.each(testimonialNodes, function (testimonialNode) {
         TweenLite.to(testimonialNode, 0.5, {
           x: '-=' + (currentBreakpoint.testimonialWidth + styles.baseline),
-          ease: Bounce.easeOut,
+          ease: Back.easeOut,
           onStart: function onStart() {
             isTransitioning = true;
           },
@@ -27377,7 +27402,7 @@ var render = function render(browserWidth) {
       marginBottom: styles.baseline * 4
     }
   }, [h('button', {
-    style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: 'blue' },
+    style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginRight: 12, color: 'white', backgroundColor: styles.colors.accent },
     hook: function hook(elem) {
       if (hookedCount < 2) {
         elem.addEventListener('click', moveRigth);
@@ -27395,7 +27420,7 @@ var render = function render(browserWidth) {
   }, _.map(testimonialsData, function (testimonial) {
     return renderTestimonial(testimonial.portrait, testimonial.text, testimonial.name);
   })), h('button', {
-    style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginLeft: 12, color: 'white', backgroundColor: 'blue' },
+    style: { width: styles.baseline, flexGrow: 0, flexShrink: 0, marginLeft: 12, color: 'white', backgroundColor: styles.colors.accent },
     hook: function hook(elem) {
       if (hookedCount < 2) {
         elem.addEventListener('click', moveLeft);
@@ -27409,7 +27434,7 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../styles.js":50,"gsap":6,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],46:[function(require,module,exports){
+},{"../styles.js":51,"gsap":6,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],47:[function(require,module,exports){
 'use strict';
 
 var vdom = require('virtual-dom');
@@ -27471,7 +27496,7 @@ var render = function render(browserWidth) {
     style: {
       height: styles.baseline * 14,
       marginBottom: styles.baseline * 4,
-      backgroundColor: 'coral'
+      backgroundColor: styles.colors.complement
     },
     hook: function hook(elem) {
       var GoogleMapsLoader = require('google-maps');
@@ -27496,10 +27521,11 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../components/footer.js":43,"../components/header.js":44,"../styles.js":50,"google-maps":5,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],47:[function(require,module,exports){
+},{"../components/footer.js":44,"../components/header.js":45,"../styles.js":51,"google-maps":5,"lodash":10,"virtual-dom":16,"virtual-hyperscript-hook":40}],48:[function(require,module,exports){
 'use strict';
 
-var h = require('virtual-dom/h');
+var h = require('virtual-hyperscript-hook')(require('virtual-dom/h'));
+var mount = require('virtual-hyperscript-mount')();
 var _ = require('lodash');
 
 // Components
@@ -27517,7 +27543,7 @@ var render = function render(browserWidth) {
 
   var hero = h('div', !browserWidth ? {} : {
     style: {
-      display: browserWidth > responsive[2] ? 'flex' : 'block',
+      display: browserWidth > responsive[3] ? 'flex' : 'block',
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
       marginRight: 'auto',
       marginLeft: 'auto',
@@ -27529,12 +27555,7 @@ var render = function render(browserWidth) {
     style: !browserWidth ? {} : {
       height: browserWidth < responsive[4] ? styles.baseline * 10 : styles.baseline * 14,
       maxHeight: styles.baseline * 14
-    } })), h('h1', !browserWidth ? {} : { style: _.assign({}, browserWidth > responsive[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero, browserWidth > responsive[2] ? {
-      marginLeft: -styles.baseline,
-      paddingRight: styles.baseline
-    } : {
-      marginTop: -(styles.baseline / 2) * 3
-    }) }, 'NOSOTROS TE AYUDAMOS A ALCANZAR TU POTENCIAL.')]);
+    } })), h('div', !browserWidth ? {} : { style: browserWidth > responsive[4] ? styles.fonts.desktop.hero : styles.fonts.mobile.hero }, [h('h1', { style: { display: 'inline' } }, 'En Guerrero Fitness te aconsejamos y ayudamos a descubrir tu rutina perfecta. Solo '), h('a', { href: '/contact', style: _.assign({}, styles.fonts.link, { display: 'inline' }) }, 'llámanos o visitanos.')])]);
 
   var testimonials = h('h2', { style: _.assign({}, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title, {
       width: currentBreakpoint !== undefined ? currentBreakpoint : responsive[0].containerWidth,
@@ -27550,7 +27571,7 @@ var render = function render(browserWidth) {
       marginLeft: 'auto',
       marginBottom: styles.baseline * 4
     }
-  }, [h('p', { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '#', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
+  }, [h('p', { style: browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'LA MEJOR ATENCION EN EL VALLE DE SAN QUINTIN, RUTINAS PERSONALIZADAS Y UN AMBIENTE AMIGABLE.'), h('a', { href: '/info', style: _.assign({}, styles.fonts.link, browserWidth > responsive[3] ? styles.fonts.desktop.title : styles.fonts.mobile.title) }, 'DESCUBRE MAS')]);
 
   return h('div#wrapper', [header(browserWidth), hero, testimonials, require('../components/testimonials-slider.js')(browserWidth), cta, footer(browserWidth) // Component
   ]);
@@ -27560,7 +27581,7 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../components/footer.js":43,"../components/header.js":44,"../components/testimonials-slider.js":45,"../styles.js":50,"lodash":10,"virtual-dom/h":15}],48:[function(require,module,exports){
+},{"../components/footer.js":44,"../components/header.js":45,"../components/testimonials-slider.js":46,"../styles.js":51,"lodash":10,"virtual-dom/h":15,"virtual-hyperscript-hook":40,"virtual-hyperscript-mount":41}],49:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -27620,7 +27641,7 @@ var render = function render(browserWidth) {
       marginTop: styles.baseline,
       marginBottom: styles.baseline * 4
     }
-  }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'), h('h2', { style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y POR ESO #SOYGUERRERO')]);
+  }, [h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Ser Guerrero es luchar y prepararse cada día, darlo todo y superar los retos que la vida nos pone. La salud es una de las herramientas mas importantes que alguien puede tener para superar estos retos, el problema es que se requiere de un esfuerzo tremendo para obtener y uno aun mas grande para conservar ese punto en el que una persona se ve y se siente en su máximo.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'Funde Guerrero Fitness porque creo que la gente puede lograr mucho mas de lo que imagina si tiene el apoyo correcto. Que es posible superarse todos los días y lograr lo que uno se propone. Pero todos de ves en cuando necesitamos ese pequeño empujón para seguir adelante. En Guerrero Fitness creamos un ambiente amigable y alentador con rutinas personalizadas, planes a la medida y un seguimiento especializado que te ayudara a descubrir de lo que en realidad eres capaz.'), h('p', { style: _.assign({}, styles.fonts.paragraph, { marginBottom: styles.baseline / 2 + 5 }) }, 'vamos a lograr que te veas y sientas como siempre has deseado.'), h('h2', { style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title }, 'Y por eso, yo como tu #SOYGUERRERO')]);
 
   var video = h('div', {
     style: {
@@ -27628,7 +27649,7 @@ var render = function render(browserWidth) {
       marginLeft: 'auto',
       marginBottom: styles.baseline * 4
     }
-  }, [h('iframe', { src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: { width: '100%', height: browserWidth / 16 * 9 } }), h('p', { style: _.assign(styles.fonts.info, { marginLeft: styles.baseline }) }, 'Video: Angel Paul Espinoza')]);
+  }, [h('iframe', { src: 'https://www.youtube.com/embed/zD4n-KGX0Vc', frameborder: '0', style: { width: '100%', height: browserWidth / 16 * 9 } }), h('p', { style: _.assign(styles.fonts.info, { marginLeft: styles.baseline }) }, 'Video: Angel Paul Espinoza')]);
 
   return h('div#wrapper', [header(browserWidth), aboutTrainer, mission, video, footer(browserWidth)]);
 };
@@ -27637,7 +27658,7 @@ module.exports = function (browserWidth) {
   return render(browserWidth);
 };
 
-},{"../components/footer.js":43,"../components/header.js":44,"../styles.js":50,"lodash":10,"virtual-dom/h":15}],49:[function(require,module,exports){
+},{"../components/footer.js":44,"../components/header.js":45,"../styles.js":51,"lodash":10,"virtual-dom/h":15}],50:[function(require,module,exports){
 'use strict';
 
 var home = require('./pages/home.js');
@@ -27657,7 +27678,7 @@ module.exports = function (browserWidth) {
   }];
 };
 
-},{"./pages/contact.js":46,"./pages/home.js":47,"./pages/info.js":48}],50:[function(require,module,exports){
+},{"./pages/contact.js":47,"./pages/home.js":48,"./pages/info.js":49}],51:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
@@ -27715,7 +27736,7 @@ var fonts = {
     },
     hero: {
       fontFamily: 'Cooper Hewitt',
-      fontSize: 64,
+      fontSize: 54,
       fontWeight: 700,
       lineHeight: baseline * 3 + 'px'
     }
@@ -27739,7 +27760,7 @@ module.exports = {
   button: button
 };
 
-},{"lodash":10}],51:[function(require,module,exports){
+},{"lodash":10}],52:[function(require,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */
@@ -27771,4 +27792,4 @@ module.exports = {
 
 });
 
-},{}]},{},[42]);
+},{}]},{},[43]);

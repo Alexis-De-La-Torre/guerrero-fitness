@@ -75,9 +75,10 @@ const render = browserWidth => {
       marginBottom: styles.baseline * 4
     }
   }, [
-    h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel posuere ligula. Phasellus vulputate, purus vel viverra cursus, lectus urna condimentum lectus, et venenatis tortor justo nec turpis. Integer quis pellentesque tortor.'),
-    h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Ut lorem libero, congue at eros ac, eleifend scelerisque libero. Nam eget suscipit urna. Donec sit amet ligula et purus porttitor fringilla at non mi. Cras ornare congue est in tempor. Aliquam id tristique urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.'),
-    h('h2', {style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'Y POR ESO #SOYGUERRERO')
+    h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Ser Guerrero es luchar y prepararse cada día, darlo todo y superar los retos que la vida nos pone. La salud es una de las herramientas mas importantes que alguien puede tener para superar estos retos, el problema es que se requiere de un esfuerzo tremendo para obtener y uno aun mas grande para conservar ese punto en el que una persona se ve y se siente en su máximo.'),
+    h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'Funde Guerrero Fitness porque creo que la gente puede lograr mucho mas de lo que imagina si tiene el apoyo correcto. Que es posible superarse todos los días y lograr lo que uno se propone. Pero todos de ves en cuando necesitamos ese pequeño empujón para seguir adelante. En Guerrero Fitness creamos un ambiente amigable y alentador con rutinas personalizadas, planes a la medida y un seguimiento especializado que te ayudara a descubrir de lo que en realidad eres capaz.'),
+    h('p', {style: _.assign({}, styles.fonts.paragraph, {marginBottom: styles.baseline / 2 + 5})}, 'vamos a lograr que te veas y sientas como siempre has deseado.'),
+    h('h2', {style: browserWidth > responsive[2] ? styles.fonts.desktop.title : styles.fonts.mobile.title}, 'Y por eso, yo como tu #SOYGUERRERO')
   ])
 
   const video = h('div', {
@@ -87,7 +88,7 @@ const render = browserWidth => {
       marginBottom: styles.baseline * 4
     }
   }, [
-    h('iframe', {src: 'https://www.youtube.com/embed/xhUfiOSOk3g', frameborder: '0', style: {width: '100%', height: (browserWidth / 16) * 9}}),
+    h('iframe', {src: 'https://www.youtube.com/embed/zD4n-KGX0Vc', frameborder: '0', style: {width: '100%', height: (browserWidth / 16) * 9}}),
     h('p', {style: _.assign(styles.fonts.info, {marginLeft: styles.baseline})}, 'Video: Angel Paul Espinoza')
   ])
 

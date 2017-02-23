@@ -14,7 +14,7 @@ _.each(router, (value) => {
     h('link', {rel: 'stylesheet', href: 'css/reset.css'}),
     // h('link', {rel: 'stylesheet', href: 'css/dom-tree-view.css'}), // for development
     // h('link', {rel: 'stylesheet', href: 'http://basehold.it/24'}), // for development
-    h('link', {rel: 'stylesheet', href: 'css/baseline.css'}), // for development
+    // h('link', {rel: 'stylesheet', href: 'css/baseline.css'}), // for development
     h('link', {rel: 'stylesheet', href: 'css/cooper-hewitt.css'}),
     h('link', {rel: 'stylesheet', href: 'css/roboto-mono.css'})
     // h('link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto+Mono'})
@@ -57,6 +57,6 @@ app.get('/font/:fileName', (req, res) => {
   res.sendFile('./static/font/' + req.params.fileName, {root: __dirname})
 })
 
-app.listen(3000, () => {
+app.listen(80, () => {
   console.log('listening on port 3000')
 })
